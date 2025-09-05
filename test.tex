@@ -1,0 +1,117 @@
+\documentclass[draft]{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{subcaption} % Required for subfigures
+\usepackage{float} % Required for [H] float placement
+\title{Tesi}
+\author{ANTONIO SESSA}
+\date{September 2025}
+
+\begin{document}
+
+\maketitle
+
+\section{Datasets}
+\subsection{FairFace}
+\begin{figure}[H] % Changed from [h!] to [H]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{dataset_graphs/ff_train.png}
+        \caption{Train Set Distribution}
+        \label{fig:fairface_train}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{dataset_graphs/ff_test.png}
+        \caption{Test Set Distribution}
+        \label{fig:fairface_test}
+    \end{subfigure}
+    \caption{FairFace Dataset Distribution}
+    \label{fig:fairface}
+\end{figure}
+
+\subsection{UTKFace}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{dataset_graphs/utk_test.png}
+    \caption{UTKFace Dataset Distribution (Test Set)}
+    \label{fig:utkface}
+\end{figure}
+
+\subsection{Lagenda}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{dataset_graphs/lagenda_train.png}
+    \caption{UTKFace Dataset Distribution (Test Set)}
+    \label{fig:lagenda}
+\end{figure}
+
+\subsection{RAF-DB}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{dataset_graphs/raf_train.png}
+        \caption{Train Set Distribution}
+        \label{fig:rafdb_train}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{dataset_graphs/raf_test.png}
+        \caption{Test Set Distribution}
+        \label{fig:rafdb_test}
+    \end{subfigure}
+    \caption{RAF-DB Dataset Distribution}
+    \label{fig:rafdb}
+\end{figure}
+
+\subsection{IMDB-Clean}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{dataset_graphs/imdb_train.png}
+        \caption{Train Set Distribution}
+        \label{fig:imdb_train}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{dataset_graphs/imdb_validation.png}
+        \caption{Test Set Distribution}
+        \label{fig:imdb_test}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{dataset_graphs/imdb_test.png}
+        \caption{Validation Set Distribution}
+        \label{fig:imdb_validation}
+    \end{subfigure}
+    \caption{IMDB-Clean Dataset Distribution}
+    \label{fig:imdb}
+\end{figure}
+
+\subsection{VggFace2}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{dataset_graphs/vgg_train.png}
+        \caption{Train Set Distribution}
+        \label{fig:vggface2_train}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{dataset_graphs/vgg_test.png}
+        \caption{Test Set Distribution}
+        \label{fig:vggface2_test}
+    \end{subfigure}
+    \caption{VggFace2 Dataset Distribution}
+    \label{fig:vggface2}
+\end{figure}
+
+\end{document}
