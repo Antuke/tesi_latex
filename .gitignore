@@ -3,3 +3,7 @@ test.log
 test.synctex.gz
 test.fdb_latexmk
 test.aux
+test.bcf
+test.run.xml
+test.bbl
+test.blg

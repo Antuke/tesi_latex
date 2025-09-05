@@ -2,6 +2,9 @@
 \usepackage{graphicx} % Required for inserting images
 \usepackage{subcaption} % Required for subfigures
 \usepackage{float} % Required for [H] float placement
+\usepackage[style=numeric, sorting=none]{biblatex}
+\addbibresource{references.bib} 
+
 \title{Tesi}
 \author{ANTONIO SESSA}
 \date{September 2025}
@@ -10,8 +13,12 @@
 
 \maketitle
 
-\section{Datasets}
+\section{Datasets Review}
 \subsection{FairFace}
+\cite{fairface}
+
+
+
 \begin{figure}[H] % Changed from [h!] to [H]
     \centering
     \begin{subfigure}[b]{0.45\textwidth}
@@ -32,6 +39,9 @@
 \end{figure}
 
 \subsection{UTKFace}
+\cite{utkface}
+
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.6\textwidth]{dataset_graphs/utk_test.png}
@@ -40,6 +50,7 @@
 \end{figure}
 
 \subsection{Lagenda}
+\cite{mivolo2023}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.6\textwidth]{dataset_graphs/lagenda_train.png}
@@ -48,6 +59,7 @@
 \end{figure}
 
 \subsection{RAF-DB}
+\cite{raf-db}
 \begin{figure}[H]
     \centering
     \begin{subfigure}[b]{0.45\textwidth}
@@ -68,6 +80,7 @@
 \end{figure}
 
 \subsection{IMDB-Clean}
+\cite{imdb-clean}
 \begin{figure}[H]
     \centering
     \begin{subfigure}[b]{0.3\textwidth}
@@ -95,6 +108,7 @@
 \end{figure}
 
 \subsection{VggFace2}
+\cite{vggface2}
 \begin{figure}[H]
     \centering
     \begin{subfigure}[b]{0.45\textwidth}
@@ -114,4 +128,6 @@
     \label{fig:vggface2}
 \end{figure}
 
+
+\printbibliography
 \end{document}
