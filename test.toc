@@ -1,0 +1,11 @@
+\contentsline {section}{\numberline {1}Literature Review}{1}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Vision Transformers}{1}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Vision Language Models}{1}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}Parameter-Efficient Fine-Tuning through LoRA}{1}{subsection.1.3}%
+\contentsline {subsection}{\numberline {1.4}Datasets Review}{3}{subsection.1.4}%
+\contentsline {subsubsection}{\numberline {1.4.1}FairFace}{3}{subsubsection.1.4.1}%
+\contentsline {subsubsection}{\numberline {1.4.2}UTKFace}{3}{subsubsection.1.4.2}%
+\contentsline {subsubsection}{\numberline {1.4.3}Lagenda}{4}{subsubsection.1.4.3}%
+\contentsline {subsubsection}{\numberline {1.4.4}RAF-DB}{4}{subsubsection.1.4.4}%
+\contentsline {subsubsection}{\numberline {1.4.5}VggFace2}{5}{subsubsection.1.4.5}%
+\contentsline {subsubsection}{\numberline {1.4.6}CelebA-HQ}{6}{subsubsection.1.4.6}%

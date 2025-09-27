@@ -1,36 +1,140 @@
-\documentclass[draft]{article}
+\documentclass{article}
 \usepackage{graphicx} % Required for inserting images
 \usepackage{subcaption} % Required for subfigures
 \usepackage{float} % Required for [H] float placement
 \usepackage[style=numeric, sorting=none]{biblatex}
 \addbibresource{references.bib} 
+\usepackage[colorlinks=true, linkcolor=blue, urlcolor=cyan]{hyperref}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+% Define custom colors
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.95}
+
+% Define the style for Python code
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
 
 \title{Tesi}
 \author{ANTONIO SESSA}
 \date{September 2025}
 
 \begin{document}
+\begin{titlepage}
+    \centering
+    \vspace*{2cm}
+    \includegraphics[width=0.35\textwidth]{images/logo_unisa.PNG}\par
+    \vspace{1cm}
+    {\Huge\bfseries Tesi di Laurea\par}
+    \vspace{1cm}
+    {\LARGE\bfseries Titolo della Tesi\par}
+    \vspace{2cm}
+    {\Large\textbf{Autore:} Antonio Sessa\par}
+    \vspace{0.5cm}
+    {\Large\textbf{Relatore:} Nome Primo Relatore\par}
+    \vspace{0.5cm}
+    {\Large\textbf{Relatore:} Nome Secondo Relatore\par}
+    \vspace{2cm}
+    {\large 2025\par}
+\end{titlepage}
 
-\maketitle
 
-\section{Datasets Review}
-\subsection{FairFace}
-\cite{fairface}
+
+\tableofcontents
 
 
 
-\begin{figure}[H] % Changed from [h!] to [H]
+
+
+\section{Literature Review}
+
+\subsection{Vision Transformers}
+
+\subsection{Vision Language Models}
+
+\subsection{ciao}
+
+\subsection{Parameter-Efficient Fine-Tuning through LoRA}
+Low-rank adaptation (LoRA) \cite{lora} is a technique first introduced to fine-tune Large Language Models (LLMs) that has also shown successful results in computer vision tasks \cite{lora_in_vits} and image and video generation tasks. The core hypothesis of LoRA is that weight updates during the adaptation of a large pre-trained model to a new task have a low “intrinsic rank”. This can be mathematically described as such: given a pre-trained weight matrix \(W_o \in \mathbb{R}^{d \times k}\), the weight update matrix  $\Delta W$  can be approximated  as $\Delta W = BA$ where  \(B \in \mathbb{R}^{d \times r}\) and \(A \in \mathbb{R}^{r \times k}\) with the rank \(r<<min(d,k)\) . 
+Given this hypothesis, during training, \(W_o\) can be frozen and not receive any gradient updates, and we can reformulate the forward pass as such: \(h = W_ox + BAx\)
+
+\begin{lstlisting}[language=Python, caption={LoRA pytorch code snippet}]
+# dense_pt, a pre-trained nn.Linear module
+dense_pt.requires_grad = False 
+k = dense_pt.in_features
+d = dense_pt.out_features
+rank = 64 # rank << min(k, d)
+lora_A = nn.Parameter(torch.zeros(rank, k))
+lora_B = nn.Parameter(torch.zeros(d, rank))
+nn.init.normal_(self.lora_A, mean=0.0, std = (1 / rank))
+
+def forward_lora(x, lora_A, lora_B, dense_pt):
+    # original model output
+    pt_model_output = dense_pt(x)
+
+    # the matrix product of lora_B @ lora_A results in
+    # a [d,r] @ [r,k] = [d,k] shaped matrix
+    # that is of equal shape of the un-approximesed weight update
+    lora_output = lora_B @ lora_A @ x
+
+    return F.ReLU(pt_model_output + lora_output)
+    
+\end{lstlisting}
+This approach has several significant benefits, making it a highly efficient and practical method for adapting large models:
+\begin{itemize}
+    \item \textbf{Reduced Number of Trainable Parameters:} By freezing the large pre-trained weight matrix \(W_o\) and only optimizing the low-rank matrices \(A\) and \(B\), LoRA drastically cuts down the number of parameters that need to be updated during training. This makes the fine-tuning process significantly less computationally intensive.
+
+    \item \textbf{Lower VRAM Consumption:} The reduction in trainable parameters directly leads to a smaller memory footprint. Since gradients and optimizer states are only stored for the low-rank matrices, the overall VRAM requirement is substantially lower, enabling the fine-tuning of large models on hardware with limited memory.
+
+    \item \textbf{Smaller Checkpoint Size:} Instead of saving a full copy of the fine-tuned model, only the small matrices \(A\) and \(B\) need to be stored for each task. This results in highly portable and lightweight checkpoints that are orders of magnitude smaller than the original model.
+
+    \item \textbf{No Added Inference Latency:} After training, the weight update can be merged directly into the original weights by computing \(W = W_o + BA\). This means the model architecture remains unchanged during inference, and there is no additional computational overhead or latency compared to the original pre-trained model.
+\end{itemize}
+
+Moreover, LoRA can perform just as well as full fine-tuning in some cases \cite{lora, lora_in_vits}, but as task complexity increases, full fine-tune may still outperform LoRA considerably \cite{lora_learnforgets}.
+The success of this methodology has inspired many other studies on parameter-efficient adaptation trough  low-rank decomposition \cite{peft_review}: Weight-Decomposed Low-Rank Adaptation (DoRA) \cite{Dora} enhances LoRA by decomposing the \(W_o\) weight matrix in its magnitude vector \(m \in \mathbb{R}^{1 \times k}\) and its direction matrix \(V \in \mathbb{R}^{d \times k}\), and directly trains the magnitude vector and uses LoRA to train the direction matrix; QLoRA \cite{qlora} focuses on drastic reduction of VRAM requirements while maintaining performance through quantization; LoRA+ \cite{lora_plus} proposes to set an higher learning rate to the B matrices, to more optimally fine-tune models with larger embedding dimension. 
+Furthermore, solutions like mLoRA \cite{mlora} have been developed to efficiently train numerous adapters in parallel by leveraging a single shared base model. Subsequently, for inference, systems such as S-LoRA \cite{slora} and B-LoRA \cite{BLoRA} can serve multiple  adapters concurrently, batching requests for different tasks to transform the single large model into an efficient multi-task network.
+
+
+\subsection{Datasets Review}
+In the following paragraphs we list all the datasets used for the training, validation and testing of our models. Each dataset has been moreover processed to obtain the crop of the faces\footnote{It is not obvious that for our tasks taking the crop of only faces is optimal, but is necessary due to the varied nature of images, which include both full-body and close-up. This preprocessing step ensures a uniform input for the models.}, using the DNN available in the following \href{https://github.com/sr6033/face-detection-with-OpenCV-and-DNN}{repository}, or using the already provided bounding boxes by the authors. For each training set listed below, also a validation set will be extracted doing an 80-20 split. 
+
+\subsubsection{FairFace}
+The FairFace dataset \cite{fairface} contains 108,501 images, with an emphasis on balanced ethnicity composition. The faces are labeled for gender and age groups. It is from the FairFace dataset that we take the 9 age groups for our age classification tasks. In our experiments the FairFace dataset is used both for training and testing, using the split provided by the authors.
+\begin{figure}[H] 
     \centering
     \begin{subfigure}[b]{0.45\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{dataset_graphs/ff_train.png}
+        \includegraphics[width=\textwidth]{dataset_graphs/FairFace_train_distribution.pdf}
         \caption{Train Set Distribution}
         \label{fig:fairface_train}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.45\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{dataset_graphs/ff_test.png}
+        \includegraphics[width=\textwidth]{dataset_graphs/FairFace_test_distribution.pdf}
         \caption{Test Set Distribution}
         \label{fig:fairface_test}
     \end{subfigure}
@@ -38,40 +142,39 @@
     \label{fig:fairface}
 \end{figure}
 
-\subsection{UTKFace}
-\cite{utkface}
-
-
+\subsubsection{UTKFace}
+The UTKFace dataset \cite{utkface} contains 24,103 images, labeled with ages and gender. The age range spans from 0 to 116 years old. In our experiments the UTKFace dataset will be used only for testing purposes, providing a benchmark for the model's cross-dataset generalization capabilities.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\textwidth]{dataset_graphs/utk_test.png}
+    \includegraphics[width=0.6\textwidth]{dataset_graphs/UTK_test_distribution.pdf}
     \caption{UTKFace Dataset Distribution (Test Set)}
     \label{fig:utkface}
 \end{figure}
 
-\subsection{Lagenda}
-\cite{mivolo2023}
+\subsubsection{Lagenda}
+The Lagenda dataset \cite{mivolo2023} \cite{mivolo2024} provides 67,159 images, labeled with age and gender. The age range spans from 0 to 95 years, and is fairly balanced on the age range going from 3 to 69 years old. In our experiment, the Lagenda dataset will be used only for training purposes.
+
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\textwidth]{dataset_graphs/lagenda_train.png}
+    \includegraphics[width=0.6\textwidth]{dataset_graphs/Lagenda_train_distribution.pdf}
     \caption{UTKFace Dataset Distribution (Test Set)}
     \label{fig:lagenda}
 \end{figure}
 
-\subsection{RAF-DB}
-\cite{raf-db}
+\subsubsection{RAF-DB}
+The RAF-DB dataset \cite{raf-db} provides 14,388 images, labeled with gender and facial emotion. The facial emotion classes are the following: "Surprise", "Fear", "Disgust", "Happy", "Sad", "Angry", and "Neutral". The RAF-DB dataset will be used both for training and testing, (come abbiamo lo split?). The samples labeled for emotion are by far the fewest and are also unbalanced; in chapter (capitolo in cui spieghiamo sampling) we explain how we tackle this problem.
 \begin{figure}[H]
     \centering
     \begin{subfigure}[b]{0.45\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{dataset_graphs/raf_train.png}
+        \includegraphics[width=\textwidth]{dataset_graphs/RAF-DB_train_distribution.pdf}
         \caption{Train Set Distribution}
         \label{fig:rafdb_train}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.45\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{dataset_graphs/raf_test.png}
+        \includegraphics[width=\textwidth]{dataset_graphs/RAF-DB_test_distribution.pdf}
         \caption{Test Set Distribution}
         \label{fig:rafdb_test}
     \end{subfigure}
@@ -79,55 +182,39 @@
     \label{fig:rafdb}
 \end{figure}
 
-\subsection{IMDB-Clean}
-\cite{imdb-clean}
+\subsubsection{VggFace2}
+The VggFace2 \cite{vggface2} dataset contains 3.31 million images of 9131 subjects, labeled by gender. Moreover, each samples has been also labeled with age using (modello usato per la label di età). In our experiments the VggFace2 dataset will be used only for testing, providing a well enstablished benchmark dataset for our tasks. The choice to exclude the VggFace2 for training is to avoid to bring an heavy bias on picture of celebreties and limit the training time required. (menzoniamo il fatto che gli esperimenti fatti con vggface2 non sembrano portare a buoni risultati?)
+
 \begin{figure}[H]
     \centering
-    \begin{subfigure}[b]{0.3\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{dataset_graphs/imdb_train.png}
-        \caption{Train Set Distribution}
-        \label{fig:imdb_train}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.3\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{dataset_graphs/imdb_validation.png}
-        \caption{Test Set Distribution}
-        \label{fig:imdb_test}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.3\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{dataset_graphs/imdb_test.png}
-        \caption{Validation Set Distribution}
-        \label{fig:imdb_validation}
-    \end{subfigure}
-    \caption{IMDB-Clean Dataset Distribution}
-    \label{fig:imdb}
+    \includegraphics[width=0.6\textwidth]{dataset_graphs/Vgg_test_distribution.pdf}
+    \caption{UTKFace Dataset Distribution (Test Set)}
+    \label{fig:utkface}
 \end{figure}
 
-\subsection{VggFace2}
-\cite{vggface2}
-\begin{figure}[H]
+
+
+\subsubsection{CelebA-HQ}
+The CelebaHQ dataset \cite{celeba1} \cite{celeba2} provides 30,000 high-quality images, labeled by gender. In our experiments the CelebaHQ dataset will be used both for training and testing.
+\begin{figure}[H] % Changed from [h!] to [H]
     \centering
     \begin{subfigure}[b]{0.45\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{dataset_graphs/vgg_train.png}
+        \includegraphics[width=\textwidth]{dataset_graphs/CelebA_HQ_train_distribution.pdf}
         \caption{Train Set Distribution}
-        \label{fig:vggface2_train}
+        \label{fig:fairface_train}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.45\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{dataset_graphs/vgg_test.png}
+        \includegraphics[width=\textwidth]{dataset_graphs/CelebA_HQ_test_distribution.pdf}
         \caption{Test Set Distribution}
-        \label{fig:vggface2_test}
+        \label{fig:fairface_test}
     \end{subfigure}
-    \caption{VggFace2 Dataset Distribution}
-    \label{fig:vggface2}
+    \caption{FairFace Dataset Distribution}
+    \label{fig:fairface}
 \end{figure}
 
-
+\listoffigures
 \printbibliography
 \end{document}
