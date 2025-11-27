@@ -1,0 +1,132 @@
+\documentclass[a4paper,12pt]{report}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{subcaption} % Required for subfigures
+\usepackage{float} % Required for [H] float placement
+\usepackage[style=numeric, sorting=none]{biblatex}
+\addbibresource{references.bib} 
+\usepackage[colorlinks=true, linkcolor=blue, urlcolor=cyan]{hyperref}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{multirow}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{booktabs}
+\usepackage{siunitx} 
+\usepackage{geometry}
+\usepackage{bbm} 
+\usepackage{setspace}
+\usepackage{threeparttable}
+\geometry{top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm}
+\setlength{\parindent}{0pt}
+\linespread{1.5}
+\usepackage{times}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{xcolor}
+\usepackage{amssymb}
+\fontsize{14}{15}
+% Define custom colors
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{code}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.95}
+\usepackage{booktabs}
+% Define the style for Python code
+\lstdefinestyle{mystyle}{
+	backgroundcolor=\color{backcolour},   
+	commentstyle=\color{codegreen},
+	keywordstyle=\color{magenta},
+	numberstyle=\tiny\color{codegray},
+	stringstyle=\color{codepurple},
+	basicstyle=\ttfamily\footnotesize,
+	breakatwhitespace=false,         
+	breaklines=true,                 
+	captionpos=b,                    
+	keepspaces=true,                 
+	numbers=left,                    
+	numbersep=5pt,                  
+	showspaces=false,                
+	showstringspaces=false,
+	showtabs=false,                  
+	tabsize=2
+}
+
+\lstset{style=mystyle}
+% --- Add these lines to your preamble ---
+\usepackage{xcolor}
+
+% --- Define your custom colors here ---
+% (LaTeX knows 'red', 'blue', 'purple', 'lime', 'yellow', 'pink')
+% You will likely need to define 'lightblue' and 'aquamarine'
+% Here are some examples using web colors (HTML):
+\definecolor{lightblue}{HTML}{ADD8E6}
+\definecolor{aquamarine}{HTML}{7FFFD4}
+\definecolor{userpink}{HTML}{FFC0CB} % 'pink' is already a color, but you can override
+\definecolor{angrypurple}{HTML}{702963} % 'purple' is also standard
+
+% --- This command creates the legend item (a colored box + text) ---
+% Usage: \legenditem{color_name}{Text}
+\newcommand{\legenditem}[2]{{\color{#1}\rule{3mm}{3mm}}\hspace{0.5em}#2}
+\title{Tesi}
+\author{ANTONIO SESSA}
+\date{September 2025}
+
+\begin{document}
+	\begin{center}
+		{\Large\textbf{UNIVERSITÀ DEGLI STUDI DI SALERNO}}\\[1.8em]
+		
+		{\normalsize DIPARTIMENTO DI INGEGNERIA DELL’INFORMAZIONE ED}\\
+		{\normalsize ELETTRICA E MATEMATICA APPLICATA}\\[1.2em]
+		
+		{\normalsize CORSO DI LAUREA MAGISTRALE IN INGEGNERIA INFORMATICA}\\[3.2em]
+		
+		\includegraphics[width=0.25\textwidth]{images/logo_unisa.png}\\[3.5em]
+		
+		{\normalsize ELABORATO FINALE}\\[1.8em]
+		
+		{\large\textbf{Adapting Vision Language Models via parameter-efficient fine-tuning for Multitask Classification of Age, Gender, and Emotion}}
+	\end{center}
+	
+	\vspace{3em}
+	
+	\begin{minipage}{0.45\textwidth}
+		\raggedright
+		\textbf{Relatore}\\[1em]
+		Prof. Mario Vento\\[1em]
+		Prof. Antonio Greco
+		
+	\end{minipage}
+	\hfill
+	\begin{minipage}{0.45\textwidth}
+		\raggedleft
+		\textbf{Candidato}\\[1em]
+		Antonio Sessa\\[1em]
+		Matr. 0622702305
+	\end{minipage}
+	\newpage
+	
+	\begin{abstract} 
+		\textbf{Description of the problem addressed}
+		\par	
+		Recognizing facial attributes such as age, gender, and emotion is an inherently difficult computer vision task due to high intra-class variability and challenging real-world conditions. In this field, large-scale Vision Language Models (VLM) can offer a powerful, generalized visual representations from large scale image-text pre-training, but their direct application to this specialized domain can be inefficient, due to the unnecessary computational overhead of their full architectures, which are not optimized for a pure classification objective. Therefore the central challenge of this work is to develop an efficient and effective adaptation framework to leverage these powerful, pre-trained vision encoders for a unified, multi-task classification objective.
+		
+		\medskip
+		\textbf{Thesis framework in the contemporary technical scenario}
+		\par
+		In the current landscape of computer vision, Vision Language Models represent a major shift in the field, demonstrating exceptional zero-shot capabilities through massive-scale pre-training on billions of image-text pairs, in fact, state-of-the-art models like CLIP, SigLIP, and the recent Perception Encoders have shown that joint vision-language training yields powerful, transferable visual representations. Concurrently, the field has witnessed the rise of Parameter-Efficient Fine-Tuning techniques, particularly LoRA and its variants, which enable adaptation of this large pre-trained models with minimal trainable parameters and computational cost. This thesis positions itself at the intersection of these two trends, proposing a framework that leverages the rich visual representations learned by state-of-the-art VLMs while employing PEFT methodologies to enable efficient, specialized adaptation for multi-task facial analysis to address both the performance and efficiency demands of real-world scenarios.
+		\par
+		
+		\medskip
+		\textbf{Personal contribution of the candidate to the solution of the problem described}
+		\par
+		This thesis contributes a comprehensive framework for the efficient multi-task adaptation of a VLM's vision encoder, encompassing its design, implementation, and rigorous evaluation, with a systematic comparison of multiple adaptation techniques such as linear probing, attention probing, partial fine-tuning, and Parameter-Efficient Fine-Tuning (PEFT). The final result of this work is a unified multi-task model that achieves strong accuracy and generalization across all three facial analysis tasks, while also being computationally efficient by discarding the VLM's text encoder to halve inference GFLOPs.
+		
+		\medskip
+		\textbf{Description of the experimental contents of the work}
+		\par
+		The experimental work provides a rigorous empirical evaluation of the proposed framework. The PE-Core-L vision encoder is adapted for the three tasks using a composite dataset (FairFace, Lagenda, RAF-DB, CelebA-HQ), with generalization tested on unseen benchmarks (UTKFace, VggFace2). A comprehensive comparison is conducted between multiple adaptation strategies: a zero-shot baseline, linear and attention probing, partial fine-tuning of the final blocks, and PEFT (LoRA+/DoRA). These methods are evaluated in both single-task and multi-task settings, with the latter employing uncertainty-weighting to balance the loss functions, masked labeling to handle partially annotated data and balanced sampling to address the unbalanced datasets. Performance is measured by accuracy, balanced accuracy and also by computational efficiency, using GFLOPs and the number of trainable parameters to quantify the final model's efficiency.
+	\end{abstract}
+	
+\end{document}

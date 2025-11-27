@@ -1,0 +1,41 @@
+\begin{table}[H]
+	
+	% Open the threeparttable environment
+	\makebox[\textwidth][c]{
+		\begin{threeparttable}
+			\setlength{\tabcolsep}{6pt} % Adjust column spacing for a wider table
+			\begin{tabular}{lccccc}
+				\toprule
+				& \multicolumn{2}{c}{\textbf{Age (Acc. \%)}} & \multicolumn{2}{c}{\textbf{Gender (Acc. \%)}} & \textbf{Emotion (Acc. \%)} \\
+				\cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-6}
+				\textbf{Method} & \textbf{FairFace} & \textbf{UTKFace} & \textbf{FairFace} & \textbf{UTKFace} & \textbf{RAF-DB} \\
+				\midrule
+				\multicolumn{6}{l}{\textit{SOTA (Age/Gender Focused)}} \\
+				MIVOLO$_{224}$ \cite{mivolo2023} & 61.07  & 3.7 MAE & 95.73 & \textbf{98.84} & - \\
+				MIVOLO$_{384}$ \cite{mivolo2024} & 62.28  & ... & 97.5 & ... & - \\
+				CLIP ViT-L/14 336px\tnote{*} \cite{clip} & 63.45 & ... & 97.1 & ... & - \\
+				\midrule
+				\multicolumn{6}{l}{\textit{SOTA (Emotion Focused)}} \\
+				ResEmoteNet \cite{resemotenet} & - & - & - & - & \textbf{94.76} \\
+				APViT \cite{apvit} & - & - & - & - & 	92.21 \\
+				POSTER++ \cite{poster} & - & - & - & - & 91.98 \\
+				\midrule
+				\multicolumn{6}{l}{\textit{Our Models}} \\
+				MTLoRA   & \textbf{64.11} & 63.96 & \textbf{97.62} & 96.93 & 90.06 \\
+				LoRA   & 63.73 & 63.34 & 97.57 & 96.90 & 91.21 \\
+				\bottomrule
+			\end{tabular}
+			% Revised Caption:
+			\caption{Performance comparison with state-of-the-art (SOTA) methods for age, gender, and emotion recognition on standard benchmarks.}
+			\label{tab:sota_all}
+			
+			% Revised tablenotes block:
+			\begin{tablenotes}
+				\item[*] \small The original CLIP paper  reports accuracy disaggregated by ethnicity ('White' and 'Other'). The values shown are the average of these two groups (Age: 63.8\% and 63.1\%; Gender: 96.5\% and 97.7\%).
+				\item \small '-' Indicates the method is not designed for this task.
+				\item \small '...' Indicates the result was unavailable.
+			\end{tablenotes}
+			
+		\end{threeparttable} % Close the environment
+	}
+\end{table}

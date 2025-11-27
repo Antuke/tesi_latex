@@ -1,0 +1,38 @@
+Goodmorning, I'm Antonio Sessa, and in my thesis I worked on the adaptation of VLM via PEFT methedologies for the particular task of soft biometric attributes recognition.
+
+*CLICK*
+
+Soft biometric attributes are non-unique human attributes that can be collected without human interactions from pictures.
+
+They have different application in fiels like social robotics, marketing, security and wellness.
+
+*CLICK* 
+
+So our particular domain involves the simultanios classification of facial emotion (happy, sad, angry...), age groups, that can be kid, teeneger, young adult... and gender.
+
+These task all present some unique challanges:
+Facial emotion for example has dataset that have low annotator agreement are unbalanced and quite small.
+Age group has the particular problem of high-class intra-variance, where two person of the same age may look really different.
+
+*CLICK*
+
+Our first idea was to use VLM in a zero-shot manner (Perception Encoder as our VLM of choice). VLM are large pre-trained networks, that have the ability to embedd text and image in the same vector space, so that we can use cosine similarity to build a classifier without training.
+
+*CLICK*
+
+First result are not really good. The problem are poor accuracy on the two "difficult" task, age and emotion, and also high memory footprint and latency.
+
+To address these problems, the idea that we will follow is the following when: since vision understanding stems from the vision encoder, we will omit the text encoder and treat the vision encoder as a foundation vision model. 
+
+
+*CLICK*
+
+Since we need to adapt the model to our task we need a dataset. We gathered a composite dataset, that has both strong points and weak points.
+*read the points*
+
+*CLICK*
+
+Moreover, to improve latency, we want a multi-task model, this brings also new problems that require different solutions:
+*Read* 
+
+Uncertainty weighting is a loss balancing scheme that tunes the loss weights with backpropagation, in particular the model learns to model the homoscedastic uncertainty of each task.

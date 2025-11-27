@@ -1,0 +1,93 @@
+\begin{table}[H]
+	\centering
+	\caption{Model Accuracy (\%) on the Emotion Task}
+	\label{tab:emotion_acc}
+	
+	\begin{tabular}{l c}
+		\toprule
+		Model & RAF-DB  \\
+		\midrule
+		LP & 84.82 \\
+		AP & 85.12 \\
+		FT$_4$ & 88.42 \\
+		DoRA & \textbf{91.21}  \\
+		MTLoRA & 90.06 \\
+
+		\bottomrule
+	\end{tabular}
+\end{table}
+\begin{table}[H]
+	\centering
+	\caption{Model Accuracy (\%) on the Age Task}
+	\label{tab:age_acc}
+	
+	\begin{tabular}{l cccc}
+		\toprule
+		Model & UTKFace & FairFace & VGGFace2  \\
+		\midrule
+		LP & 61.56 & 61.00 & 57.75 \\
+		AP & 63.04 & 61.89 & 59.94 \\
+		FT$_4$ & 62.54 & 63.45 & 61.68  \\
+		DoRA & 63.34 & 63.73 & 61.69 \\
+		MTLoRA & \textbf{63.96} & \textbf{64.11} & \textbf{62.74} \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+\begin{table}[H]
+	\centering
+	\caption{Model Accuracy (\%) on the Gender Task}
+	\label{tab:gender_acc}
+	
+	\begin{tabular}{l ccc}
+		\toprule
+		Model & UTKFace & FairFace & VGGFace2  \\
+		\midrule	
+		LP & 97.00 & 97.70 & 97.92  \\
+		AP & 96.79 & 97.63 & 97.79\\
+		FT$_4$ & 96.68 & \textbf{97.71} & 97.81 \\
+		DoRA & 96.90 & 97.57 & \textbf{98.00} \\
+		MTLoRA & \textbf{96.93} & 97.62  & \textbf{98.00}  \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+
+\begin{table}[H]
+	\centering
+	\caption{Summary of Model Average Performance in Single-Task (\%)}
+	\label{tab:avg_acc_summary}
+	\begin{tabular}{l cccc}
+		\toprule
+		Model & Emotion Acc & Avg. Age Acc & Avg. Gender Acc & \textbf{Overall Average} \\
+		\midrule
+		ZS & 66.57 & 47.36 & 96.67 & 70.20 \\
+		LP & 84.32 & 61.28 & 97.54 & 81.05 \\
+		AP & 84.91 & 61.47 & 97.55 & 81.31 \\
+		FT$_4$ & 88.78 & 62.80 & 97.57 & 83.05 \\
+		DoRA & 90.83 & 63.72 & 97.56 & \textbf{84.04} \\
+		\bottomrule
+	\end{tabular}
+
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\begin{threeparttable} % Start the threeparttable environment
+		\caption{Summary of Model Average Performance in Multi-Task (\%)}
+		\label{tab:summary_acc}
+		\begin{tabular}{l cccc}
+			\toprule
+			Model & Emotion Acc & Avg. Age Acc & Avg. Gender Acc & \textbf{Overall Avg} \\
+			\midrule
+			ZS & 66.57 & 47.36 & 96.67 & 69.61 \\
+			LP & 84.91 & 61.28 & 97.54 & 78.76 \\
+			AP & 85.12 & 62.46 & 97.40 & 81.66 \\
+			FT$_4$ & 88.43  & 63.00 & 97.41  & 82.94 \\
+			DoRA & 91.21  &  63.53  & 97.49  & \textbf{84.07} \\
+			MTLoRA & 90.06  & 64.03  & 97.51  & 83.86 \\
+			\bottomrule
+		\end{tabular}
+		
+
+	\end{threeparttable} % End the environment
+\end{table}

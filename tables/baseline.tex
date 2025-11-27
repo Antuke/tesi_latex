@@ -1,0 +1,56 @@
+
+\begin{table}[htp]
+	\centering
+	\begin{minipage}{\textwidth}                    
+		\centering
+		\footnotesize
+		\setlength{\tabcolsep}{4pt}
+		\begin{tabular}{ccccccc}
+			\toprule
+			\textbf{UTK-Age} & \textbf{UTK-Gender} & \textbf{FairFace-Age} & \textbf{FairFace-Gender} & \textbf{RAF-DB} & \textbf{VGG-Age} & \textbf{VGG-Gender} \\
+			\midrule
+			48.62\% & 96.63\% & 46.11\% & 97.60\% & 66.57\% & 42.01\% & 95.78\% \\
+			\bottomrule
+		\end{tabular}
+		\captionof{table}[Baseline single dataset performance]{Baseline zero-shot accuracy results across testing datasets for age, gender, and emotion recognition tasks.}
+		\label{tab:baseline_zero_acc}
+		
+		\vspace{0.5cm}
+		
+		
+		\begin{minipage}{0.40\textwidth}
+			\centering
+			\footnotesize
+			\begin{tabular}{cccc}
+				\toprule
+				\textbf{Age\textsuperscript{*}} & \textbf{Gender} & \textbf{Emotion} & \textbf{Global} \\
+				\midrule
+				47.36\% & 96.67\% & 66.57\% & 69.61\% \\
+				\bottomrule
+			\end{tabular}
+			\par\footnotesize\textsuperscript{*}Average calculation  excludes the VggFace2 dataset as its age-labels data are synthetically obtained.
+			\captionof{table}[Baseline mean performance]{Mean baseline accuracy for age, gender, and emotion recognition tasks.}
+			\label{tab:baseline_mean_accuracy}
+		\end{minipage}
+		\hfill
+		\begin{minipage}{0.50\textwidth}
+			\centering
+			\footnotesize
+			\begin{tabular}{cc}
+				\toprule
+				\textbf{Component} & \textbf{Parameters} \\
+				\midrule
+				Text Encoder & 353,986,561 \\
+				Visual Encoder & 318,212,106 \\
+				\midrule
+				\textbf{Total Parameters} & \textbf{671,137,793} \\
+				\midrule
+				\textbf{GFLOPs} & \textbf{699.76} \\
+				\bottomrule
+			\end{tabular}
+			\captionof{table}[Baseline parameters counts]{Number of parameters used by the zero-shot baseline during inference}
+			\label{tab:baseline_efficiency}
+		\end{minipage}
+	\end{minipage}
+	
+\end{table}

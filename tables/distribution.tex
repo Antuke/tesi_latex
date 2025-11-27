@@ -1,0 +1,85 @@
+\begin{table}[H]
+	\centering
+	\caption{Distribution of the training set. The "Weighted \%" columns represent the effective distribution per epoch when using weighted sampling, obtained via a 10-iteration Monte Carlo simulation.}
+	\label{tab:distributions}
+	
+	% First table (Age Distribution)
+	\begin{subtable}{\textwidth}
+		\centering
+		\label{tab:age}
+		% S[table-format=5.2] aligns the numbers in the "Samples" column
+		% This requires the 'siunitx' package.
+		\begin{tabular}{l S[table-format=5.2] r r}
+			\toprule
+			\textbf{Age Group} & {\textbf{Samples}} & \textbf{\%} & \textbf{Weighted \%}\\
+			\midrule
+			0-2   & 2935  & 2.15\%  & 6.63\% \\
+			3-9   & 15699 & 11.48\% & 11.31\% \\
+			10-19 & 16032 & 11.72\% & 11.36\% \\
+			20-29 & 29784 & 21.78\% & 16.37\% \\
+			30-39 & 24462 & 17.89\% & 14.56\% \\
+			40-49 & 17976 & 13.15\% & 12.14\% \\
+			50-59 & 14413 & 10.54\% & 10.89\% \\
+			60-69 & 10618 & 7.76\%  & 9.44\% \\
+			70+   & 4828  & 3.53\%  & 7.31\% \\
+			\bottomrule
+		\end{tabular}
+	\end{subtable}
+	
+	\vspace{1cm} % Adds vertical space between the tables
+	
+	% Second table (Gender Distribution)
+	\begin{subtable}{\textwidth} % Using .5\textwidth to make this table a bit narrower
+		\centering
+		\label{tab:gender}
+		\begin{tabular}{l S[table-format=5.2] r r}
+			\toprule
+			\textbf{Gender} & {\textbf{Samples}} & \textbf{\%} & \textbf{Weighted \%}\\
+			\midrule
+			Male   & 82147 & 48.79\% & 49.26\% \\
+			Female & 86215 & 51.21\% & 50.74\% \\
+			\bottomrule
+		\end{tabular}
+	\end{subtable}
+	
+	\vspace{1cm} % Adds vertical space between the tables
+	
+	% Third table (Emotion Distribution)
+	\begin{subtable}{\textwidth}
+		\centering
+		\label{tab:emotion}
+		\begin{tabular}{l S[table-format=4.2] r r}
+			\toprule
+			\textbf{Emotion} & {\textbf{Samples}} & \textbf{\%} & \textbf{Weighted \%} \\
+			\midrule
+			Surprise & 912   & 9.90\% & 12.14\% \\
+			Fear     & 218   & 2.37\% & 8.44\% \\
+			Disgust  & 544   & 5.90\% & 9.99\% \\
+			Happy    & 3701  & 40.16\% & 26.85\% \\
+			Sad      & 1301  & 14.12\% & 14.20\% \\
+			Angry    & 556   & 6.03\% & 10.25\% \\
+			Neutral  & 1983  & 21.52\% & 18.13\% \\
+			\bottomrule
+		\end{tabular}
+	\end{subtable}
+	
+	\vspace{1cm}
+	
+	\begin{subtable}{\textwidth}
+		\centering
+		\caption{Task distribution}
+		\label{tab:tasks}
+		\begin{tabular}{l r r}
+			\toprule
+			\textbf{Task} & \textbf{Samples} & \textbf{\%} \\
+			\midrule
+			Gender  & 168362 & 100.00\% \\
+			Age     & 136747 & 81.22\% \\
+			Emotion & 9215 & 5.47\% \\
+			\midrule
+			Total   & 168362  & -- \\
+			\bottomrule
+		\end{tabular}
+	\end{subtable}
+	
+\end{table}

@@ -1,0 +1,25 @@
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {2.1}{\ignorespaces PECore model's size}}{12}{table.caption.5}%
+\contentsline {table}{\numberline {2.2}{\ignorespaces Benchmarks of $PE_{core}$, compared to SigLIP2, another popular VLM}}{12}{table.caption.6}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {3.1}{\ignorespaces Dataset composition and usage}}{25}{table.caption.15}%
+\contentsline {table}{\numberline {3.2}{\ignorespaces Distribution of the training set. The "Weighted \%" columns represent the effective distribution per epoch when using weighted sampling, obtained via a 10-iteration Monte Carlo simulation.}}{26}{table.caption.16}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {4.1}{\ignorespaces Baseline single dataset performance}}{39}{table.caption.20}%
+\contentsline {table}{\numberline {4.2}{\ignorespaces Baseline mean performance}}{39}{table.caption.20}%
+\contentsline {table}{\numberline {4.3}{\ignorespaces Baseline parameters counts}}{39}{table.caption.20}%
+\contentsline {table}{\numberline {4.4}{\ignorespaces Model Accuracy (\%) on the Emotion Task}}{40}{table.caption.21}%
+\contentsline {table}{\numberline {4.5}{\ignorespaces Model Accuracy (\%) on the Age Task}}{40}{table.caption.22}%
+\contentsline {table}{\numberline {4.6}{\ignorespaces Model Accuracy (\%) on the Gender Task}}{40}{table.caption.23}%
+\contentsline {table}{\numberline {4.7}{\ignorespaces Model Accuracy (\%) on the Emotion Task}}{43}{table.caption.24}%
+\contentsline {table}{\numberline {4.8}{\ignorespaces Model Accuracy (\%) on the Emotion Task}}{44}{table.caption.27}%
+\contentsline {table}{\numberline {4.9}{\ignorespaces Model Accuracy (\%) on the Age Task}}{44}{table.caption.28}%
+\contentsline {table}{\numberline {4.10}{\ignorespaces Model Accuracy (\%) on the Gender Task}}{45}{table.caption.29}%
+\contentsline {table}{\numberline {4.11}{\ignorespaces Summary of Model Average Performance in Single-Task (\%)}}{45}{table.caption.30}%
+\contentsline {table}{\numberline {4.12}{\ignorespaces Summary of Model Average Performance in Multi-Task (\%)}}{45}{table.caption.32}%
+\contentsline {table}{\numberline {4.13}{\ignorespaces Performance comparison with state-of-the-art (SOTA) methods for age, gender, and emotion recognition on standard benchmarks.}}{49}{table.caption.34}%
+\contentsline {table}{\numberline {4.14}{\ignorespaces Model Size and Computational Cost, and Average Accuracy on Multi-Attribute Tasks}}{50}{table.caption.35}%
+\contentsline {table}{\numberline {4.15}{\ignorespaces Concordance of prediction between zero-shot baseline, linear probe and LoRA.}}{54}{table.caption.39}%
+\contentsline {table}{\numberline {4.16}{\ignorespaces LoRA and DoRA comparison.}}{55}{table.caption.41}%
+\addvspace {10\p@ }

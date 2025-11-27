@@ -1,0 +1,54 @@
+\begin{table}[H]
+	\centering
+	\caption{Model Accuracy (\%) on the Emotion Task}
+	\label{tab:emotion_acc}
+
+	\begin{tabular}{l c}
+		\toprule
+		Model & RAF-DB  \\
+		\midrule
+		ZS & 66.57 \\
+		LP & 84.32  \\
+		AP & 84.91 \\
+		FT$_4$ & 88.78 \\
+		DoRA & \textbf{90.83} \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+\begin{table}[H]
+	\centering
+	\caption{Model Accuracy (\%) on the Age Task}
+	\label{tab:age_acc}
+
+	\begin{tabular}{l cccc}
+		\toprule
+		Model & UTKFace & FairFace & VggFace2 & Average\textsuperscript{*} \\
+		\midrule
+		ZS & 48.62 & 46.11 & 42.01 & 47.36 \\
+		LP & 61.56 & 61.69 & 57.75 & 61.28 \\
+		AP & 61.41 & 61.75 & 57.80 & 61.47 \\
+		FT$_4$ & 63.11 & 62.50 & 59.78 & 62.80 \\
+		DoRA & \textbf{63.80} & \textbf{63.64} & \textbf{61.24} & \textbf{63.72} \\
+		\bottomrule
+	\end{tabular}
+	\par\footnotesize\textsuperscript{*}Average calculation  excludes the VggFace2 dataset as its age-labels data are synthetically obtained.
+\end{table}
+\begin{table}[H] 
+	\centering 
+	\caption{Model Accuracy (\%) on the Gender Task} 
+	\label{tab:gender_acc}
+	 \begin{tabular}{l cccc}  
+	 	\toprule
+	 	Model & UTKFace & FairFace & VggFace2 & Average \\
+		\midrule
+		ZS & 96.63 & 97.60 & 95.78 & 96.67 \\
+		LP & 97.00 & 97.70 & 97.92 & 97.54 \\
+		AP & 96.92 & \textbf{97.74} & 97.98 & 97.55 \\
+		FT$_4$ & \textbf{97.02} & 97.71 & 97.99 & \textbf{97.57} \\
+		DoRA & 96.97 & 97.72 & \textbf{98.01} & 97.56 \\
+		
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+

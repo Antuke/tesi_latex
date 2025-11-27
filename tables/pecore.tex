@@ -1,0 +1,19 @@
+\begin{table}[H]
+	\centering
+	\begin{tabular}{cllcccccc}
+		\toprule
+		Scale & Tower & Params & Width & Depth & MLP & Heads & CLIP Dim & Context \\
+		\midrule
+		\multirow{2}{*}{B} & Vision & 0.09B & 768 & 12 & 3072 & 12 & \multirow{2}{*}{1024} & \multirow{2}{*}{32}  \\
+		& Text   & 0.31B & 1024 & 24 & 4096 & 16 & \\
+		\addlinespace
+		\multirow{2}{*}{L} & Vision & 0.32B & 1024 & 24 & 4096 & 16 & \multirow{2}{*}{1024} & \multirow{2}{*}{32} \\
+		& Text   & 0.31B & 1024 & 24 & 4096 & 16 & \\
+		\addlinespace
+		\multirow{2}{*}{G} & Vision & 1.88B & 1536 & 50 & 8960 & 16 & \multirow{2}{*}{1280} & \multirow{2}{*}{72} \\
+		& Text   & 0.47B & 1280 & 24 & 5120 & 20 & \\
+		\bottomrule
+	\end{tabular}
+	\caption[PECore model's size]{Architectural configurations of vision and text encoders for base (B), large (L), and giant (G) model scales.}
+	\label{tab:PECore models}
+\end{table}

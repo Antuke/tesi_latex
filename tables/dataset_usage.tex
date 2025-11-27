@@ -1,0 +1,19 @@
+\begin{table}[htbp]
+	\centering
+	\begin{threeparttable} % Start the threeparttable environment
+		\caption[Dataset composition and usage]{Dataset composition and usage}
+		\label{tab:dataset_config}
+		\begin{tabular}{lccccc}
+			\toprule
+			\textbf{Dataset} & \textbf{Train} & \textbf{Val} & \textbf{Test} & \textbf{Tasks} \\
+			\midrule
+			LAGENDA & \checkmark & \checkmark & - & Gender, Age \\
+			FairFace & \checkmark & \checkmark & \checkmark & Gender, Age \\
+			RAF-DB & \checkmark & \checkmark & \checkmark & Emotion \\
+			CelebA-HQ & \checkmark & \checkmark & - & Gender \\
+			UTKFace & - & - & \checkmark & Gender, Age \\
+			VGGFace2 & - & - & \checkmark & Gender, Age \\
+			\bottomrule
+		\end{tabular}
+	\end{threeparttable} % End the threeparttable environment
+\end{table}

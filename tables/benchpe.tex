@@ -1,0 +1,28 @@
+\begin{table}[H]
+	\centering
+	\singlespacing 
+	
+	
+	
+	\begin{tabular}{l r r r r r r r r}
+		\toprule 
+		& & & \multicolumn{6}{c}{Zero-Shot Class.} \\
+		\cmidrule(lr){4-9}
+		Model & \rotatebox{90}{Params} & \rotatebox{90}{Res.} & \rotatebox{90}{ImageNet} & \rotatebox{90}{IN-v2} & \rotatebox{90}{ObjectNet} & \rotatebox{90}{IN-Adv} & \rotatebox{90}{IN-Rend} & \rotatebox{90}{IN-Sketch} \\
+		\midrule 
+		\multicolumn{9}{l}{\textbf{B Scale}} \\
+		SigLIP2-B/16  & 0.1B & 224 & 78.2 & 71.4 & 73.6 & 55.0 & 91.7 & 68.9 \\
+		PEcore-B/16 & 0.1B & 224 & 78.4 & 71.7 & 71.9 & 62.4 & 88.7 & 92.5 \\
+		\midrule 
+		\multicolumn{9}{l}{\textbf{L Scale}} \\
+		SigLIP2-L/16  & 0.3B & 384 & 83.1 & 77.4 & 84.4 & 84.3 & 95.7 & 75.5 \\
+		PEcore-L/14 & 0.3B & 336 & 83.5 & 77.9 & 84.7 & 89.0 & 95.2 & 80.0 \\
+		\midrule
+		\multicolumn{9}{l}{\textbf{Unbounded}} \\
+		SigLIP2-g-opt & 1.1B & 384 & 85.0 & 79.8 & 88.0 & 90.5 & 96.6 & 77.4 \\
+		PEcore-G/14 & 1.9B & 448 & 85.4 & 80.2 & 88.2 & 92.6 & 96.5 & 83.7 \\
+		\bottomrule 
+	\end{tabular}
+	\caption{Benchmarks of $PE_{core}$, compared to SigLIP2, another popular VLM}
+	\label{tab:pebench}
+\end{table}

@@ -1,0 +1,30 @@
+\begin{table}[htbp]
+	\centering % Centers the table on the page
+	\caption{Model Accuracy (\%) on Facial Analysis Datasets}
+	\label{tab:face_accuracy}
+	
+
+	\begin{tabular}{l c ccc ccc}
+		\toprule
+		
+
+		\multirow{2}{*}{Model} & \multicolumn{1}{c}{Emotion} & \multicolumn{3}{c}{Age} & \multicolumn{3}{c}{Gender} \\
+		
+
+		\cmidrule(lr){2-2} \cmidrule(lr){3-5} \cmidrule(lr){6-8} 
+		
+
+		& RAF-DB & VGGFace2 & UTKFace & FairFace & VGGFace2 & UTKFace & FairFace \\
+		
+		\midrule
+		
+		
+		LP & 84.32 			& 57.75 & 88.3 & 87.5 & 95.1 & 97.2 & 96.3 \\
+		AP & 84.91 			& 87.4 & 89.1 & 88.0 & 96.4 & 98.0 & 97.1 \\
+		FT$_{4}$ & 88.78	& 61.40 & 88.9 & 87.9 & 95.8 & 97.7 & 96.8 \\
+		LoRA &90.83 		& 85.2 & 88.3 & 87.5 & 95.1 & 97.2 & 96.3 \\
+
+		
+		\bottomrule
+	\end{tabular}
+\end{table}

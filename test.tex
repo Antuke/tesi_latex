@@ -1,4 +1,4 @@
-\documentclass{article}
+\documentclass[a4paper,12pt]{report}
 \usepackage{graphicx} % Required for inserting images
 \usepackage{subcaption} % Required for subfigures
 \usepackage{float} % Required for [H] float placement
@@ -7,14 +7,32 @@
 \usepackage[colorlinks=true, linkcolor=blue, urlcolor=cyan]{hyperref}
 \usepackage{xcolor}
 \usepackage{listings}
+\usepackage{multirow}
 \usepackage{amsmath}
 \usepackage{amsfonts}
+\usepackage{booktabs}
+\usepackage{siunitx} 
+\usepackage{geometry}
+\usepackage{bbm} 
+\usepackage{setspace}
+\usepackage{threeparttable}
+\geometry{top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm}
+\setlength{\parindent}{0pt}
+\linespread{1.5}
+\usepackage{times}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{xcolor}
+\usepackage{amssymb}
+\fontsize{14}{15}
 % Define custom colors
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
-\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{code}{rgb}{0.58,0,0.82}
 \definecolor{backcolour}{rgb}{0.95,0.95,0.95}
-
+\usepackage{booktabs}
 % Define the style for Python code
 \lstdefinestyle{mystyle}{
     backgroundcolor=\color{backcolour},   
@@ -36,72 +54,338 @@
 }
 
 \lstset{style=mystyle}
+% --- Add these lines to your preamble ---
+\usepackage{xcolor}
 
+% --- Define your custom colors here ---
+% (LaTeX knows 'red', 'blue', 'purple', 'lime', 'yellow', 'pink')
+% You will likely need to define 'lightblue' and 'aquamarine'
+% Here are some examples using web colors (HTML):
+\definecolor{lightblue}{HTML}{ADD8E6}
+\definecolor{aquamarine}{HTML}{7FFFD4}
+\definecolor{userpink}{HTML}{FFC0CB} % 'pink' is already a color, but you can override
+\definecolor{angrypurple}{HTML}{702963} % 'purple' is also standard
+
+% --- This command creates the legend item (a colored box + text) ---
+% Usage: \legenditem{color_name}{Text}
+\newcommand{\legenditem}[2]{{\color{#1}\rule{3mm}{3mm}}\hspace{0.5em}#2}
 \title{Tesi}
 \author{ANTONIO SESSA}
 \date{September 2025}
 
 \begin{document}
-\begin{titlepage}
-    \centering
-    \vspace*{2cm}
-    \includegraphics[width=0.35\textwidth]{images/logo_unisa.PNG}\par
-    \vspace{1cm}
-    {\Huge\bfseries Tesi di Laurea\par}
-    \vspace{1cm}
-    {\LARGE\bfseries Titolo della Tesi\par}
-    \vspace{2cm}
-    {\Large\textbf{Autore:} Antonio Sessa\par}
-    \vspace{0.5cm}
-    {\Large\textbf{Relatore:} Nome Primo Relatore\par}
-    \vspace{0.5cm}
-    {\Large\textbf{Relatore:} Nome Secondo Relatore\par}
-    \vspace{2cm}
-    {\large 2025\par}
-\end{titlepage}
+\thispagestyle{empty}
+\begin{center}
+	{\Large\textbf{UNIVERSITÀ DEGLI STUDI DI SALERNO}}\\[1.8em]
+	
+	{\normalsize DIPARTIMENTO DI INGEGNERIA DELL’INFORMAZIONE ED}\\
+	{\normalsize ELETTRICA E MATEMATICA APPLICATA}\\[1.2em]
+	
+	{\normalsize CORSO DI LAUREA MAGISTRALE IN INGEGNERIA INFORMATICA}\\[3.2em]
+	
+	\includegraphics[width=0.25\textwidth]{images/logo_unisa.png}\\[3.5em]
+	
+	{\normalsize ELABORATO FINALE}\\[1.8em]
+	
+	{\large\textbf{Adapting Vision Language Models via parameter-efficient fine-tuning for Multitask Classification of Age, Gender, and Emotion}}
+\end{center}
 
+\vspace{3em}
+
+\begin{minipage}{0.45\textwidth}
+	\raggedright
+	\textbf{Relatore}\\[1em]
+	Prof. Mario Vento\\[1em]
+	Prof. Antonio Greco
+	
+\end{minipage}
+\hfill
+\begin{minipage}{0.45\textwidth}
+	\raggedleft
+	\textbf{Candidato}\\[1em]
+	Antonio Sessa\\[1em]
+	Matr. 0622702305
+\end{minipage}
+
+\vfill % This pushes the following content to the bottom of the page
+
+\begin{center}
+	Anno Accademico 2024-2025
+\end{center}
+\cleardoublepage
+
+\pagenumbering{roman}
+\begin{center}
+	\subsection*{Abstract} 
+\end{center}
+
+% Add some space after the manual heading
+\thispagestyle{plain}
+	\textbf{Description of the problem addressed}
+	\par	
+	Recognizing facial attributes such as age, gender, and emotion is an inherently difficult computer vision task due to high intra-class variability and challenging real-world conditions. In this field, large-scale Vision Language Models (VLM) can offer a powerful, generalized visual representations from large scale image-text pre-training, but their direct application to this specialized domain can be inefficient, due to the unnecessary computational overhead of their full architectures, which are not optimized for a pure classification objective. Therefore the central challenge of this work is to develop an efficient and effective adaptation framework to leverage these powerful, pre-trained vision encoders for a unified, multi-task classification objective.
+	
+	\medskip
+	\textbf{Thesis framework in the contemporary technical scenario}
+	\par
+	In the current landscape of computer vision, Vision Language Models represent a major shift in the field, demonstrating exceptional zero-shot capabilities through massive-scale pre-training on billions of image-text pairs, in fact, state-of-the-art models like CLIP, SigLIP, and the recent Perception Encoders have shown that joint vision-language training yields powerful, transferable visual representations. Concurrently, the field has witnessed the rise of Parameter-Efficient Fine-Tuning techniques, particularly LoRA and its variants, which enable adaptation of this large pre-trained models with minimal trainable parameters and computational cost. This thesis positions itself at the intersection of these two trends, proposing a framework that leverages the rich visual representations learned by state-of-the-art VLMs while employing PEFT methodologies to enable efficient, specialized adaptation for multi-task facial analysis to address both the performance and efficiency demands of real-world scenarios.
+	\par
+
+
+	\newpage
+	\textbf{Personal contribution of the candidate to the solution of the problem described}
+	\par
+	This thesis contributes a comprehensive framework for the efficient multi-task adaptation of a VLM's vision encoder, encompassing its design, implementation, and rigorous evaluation, with a systematic comparison of multiple adaptation techniques such as linear probing, attention probing, partial fine-tuning, and Parameter-Efficient Fine-Tuning (PEFT). The final result of this work is a unified multi-task model that achieves strong accuracy and generalization across all three facial analysis tasks, while also being computationally efficient by discarding the VLM's text encoder to halve inference GFLOPs.
+	
+	\medskip
+	\textbf{Description of the experimental contents of the work}
+	\par
+	The experimental work provides a rigorous empirical evaluation of the proposed framework. The PE-Core-L vision encoder is adapted for the three tasks using a composite dataset (FairFace, Lagenda, RAF-DB, CelebA-HQ), with generalization tested on unseen benchmarks (UTKFace, VggFace2). A comprehensive comparison is conducted between multiple adaptation strategies: a zero-shot baseline, linear and attention probing, partial fine-tuning of the final blocks, and PEFT (LoRA+/DoRA). These methods are evaluated in both single-task and multi-task settings, with the latter employing uncertainty-weighting to balance the loss functions, masked labeling to handle partially annotated data and balanced sampling to address the unbalanced datasets. Performance is measured by accuracy, balanced accuracy and also by computational efficiency, using GFLOPs and the number of trainable parameters to quantify the final model's efficiency.
 
 
 \tableofcontents
+\cleardoublepage
+
+\pagenumbering{arabic}
+\chapter{Introduction}
+\section{Background}
+Recognizing soft biometric attributes from facial images is an increasingly critical research area with concrete applications across numerous sectors: in social robotics, it enables more natural and personalized interactions, in marketing, it allows for refined audience segmentation and dynamic content personalization. Furthermore, it can support behavioral analysis in security and surveillance, and be applied to psychological well-being monitoring in healthcare.
+Despite its broad utility, facial attribute recognition is inherently difficult, as unlike generic classification, it must contend with high intra-class variability: individuals of the same age, gender, or emotion display significant differences due to genetic, ethnic, and morphological factors. The task is further complicated by environmental variables such as poor lighting, varied head poses, complex facial expressions, and occlusions, which make recognition in uncontrolled scenarios exceptionally challenging.
+In this context, Vision Language Models present a promising opportunity. These models, pre-trained on massive quantities of image-text pairs from the web, acquire robust semantic representations that facilitate transfer to downstream tasks. For facial attribute analysis, a VLM's ability to leverage this vast pre-trained knowledge may enable competitive performance even with limited data, bypassing the need for extensive, task-specific annotations required by traditional deep neural networks.
+\section{Problem statement}
+The primary challenge this thesis addresses is the effective adaptation of large-scale, pre-trained vision-language models for the specialized domain of multi-task facial attribute classification. While these models possess powerful, generalized visual encoders from being trained on vast and diverse image-text datasets, their direct application to specific tasks such as recognizing gender, age, and emotion from faces is not straightforward. VLMs with auto-regressive decoder architectures with hundreds of millions of parameters incur unnecessary computational overhead for discriminative objectives. On the other hand, dual-encoder models used for zero-shot classification via cosine similarity often fail to achieve the satisfactory accuracy and robustness required for detailed facial analysis.
+Given these limitations, this thesis aims to develop an efficient and effective adaptation framework. Rather than using the entire VLM architecture, our approach is to isolate the pre-trained vision encoder, as it is the core component from which all of the model's visual understanding capabilities stem. The fundamental hypothesis is that this encoder, as a result of its vast pre-training, has learned a highly adaptable visual representation, that while not yet specialized for facial attributes, provides a powerful and feature-rich foundation for efficient fine-tuning, with the goal of producing an unified multi-task model for the following three key facial analysis tasks:
+\subsection{Facial Expression Recognition}
+Facial expression recognition (FER) is the task of detecting human emotions from static images or videos, and it is of particular interest for field such as customer behavior analysis, advertising and sociable robotics. The task is typically formulated as a 6+1 class classification task, with the classes taken from Paul Ekman's work that compiled the "universal" human expressions: wrath (anger), grossness (disgust), fear, joy (happiness), loneliness (sadness), shock (surprise) and the plus one for neutral, as a lack of emotion. 
+%Some datasets also include contempt as a seventh "universal" emotion (e.g AffectNet). Moreover the task is often associated with two regression %task, with the prediction of the level of arousal, a value that indicates the strength of the emotion, and valance, a value that indicates how %pleasant is the emotion.  
+
+
+\subsection{Age group classification}
+Age estimation from facial images is a computer vision task that involves predicting a person's age or age range from a digital image or video. This task has a wide array of applications, including targeted advertising, access control for age-restricted content, and enhancing human-computer interaction. Considering the inherent uncertainty of the task, as the age labels themselves are often derived from noisy data, we will formulate the problem as an age range classification task. Given an image of a face, we will classify it into one of nine possible groups: 0-2, 3-9, 10-19, 20-29, 30-39, 40-49, 50-59, 60-69, and 70+. Moreover, many practical applications do not require a precise age but rather a general age category, making classification a suitable and efficient solution.
+
+\subsection{Gender Recognition}
+Gender recognition from facial images is a computer vision task aimed at classifying a person's perceived gender based on their facial features. This capability is often used in conjunction with other facial analysis tasks to gather demographic statistics, for applications in areas such as human-computer interaction, retail analytics, targeted advertising, and content personalization. The task is formulated as a binary classification problem, where the model is trained to predict one of two labels: 'male' or 'female'.
+
+\section{Objectives}
+The primary objective of this thesis is to design, implement, and evaluate an efficient multi-task learning model for the simultaneous classification of gender, age, and emotion from facial images using state-of-the-art vision encoder pre-trained at a massive scale by aligning billions of image-text pairs. 
+To achieve this goal, this work will: 
+\begin{itemize} 
+	\item \textbf{Investigate and compare adaptation strategies:} Systematically evaluate different methods for adapting the vision encoder, ranging from linear probing to parameter-efficient fine-tuning (PEFT) methodologies. 
+	\item \textbf{Evaluate state-of-the-art vision encoders:} Conduct a literature-based analysis to identify and select the vision encoders best suited for the target multi-task classification problem. 
+	\item \textbf{Develop a robust and balanced multi-task framework}: design and implement a system for the multi-task classifications problem, explicitly addressing challenges of inter-task imbalance (where emotion is underrepresented in the data), class imbalance (especially for negative emotions and extreme age groups), and management of partially annotated datasets (where each dataset provides labels for only a subset of tasks).
+	\item \textbf{Analyze performance and efficiency trade-offs:} Assess the proposed solutions by comparing their predictive performance (using metrics such as accuracy and balanced accuracy) against their computational efficiency (measured by the number of trainable parameters and inference latency). 
+\end{itemize}
+
+
+\section{Thesis structure}
+This thesis is organized into the following chapters:
+\begin{itemize}
+	\item \textbf{Chapter 2 - Literature Review:} Provides a comprehensive background on the core technologies, including Vision Transformers and Vision Language Models (VLMs). It examines the Perception Encoder VLM, reviews state-of-the-art methods for facial attribute analysis, details the Parameter-Efficient Fine-Tuning technique LoRA, and describes the datasets used for training and evaluation.
+	
+	\item \textbf{Chapter 3 - Methodology:} Details the experimental design and implementation. This chapter covers the shared training configurations, data augmentation pipelines, and balanced sampling strategies. It then describes the specific adaptation methods evaluated linear probing, attention probing, full fine-tuning, and PEFT and elaborates on the multi-task learning framework designed to jointly train the model on all three tasks.
+	
+	\item \textbf{Chapter 4 - Experimental Results:} Presents the empirical findings from the experiments. It defines the evaluation metrics and provides a detailed comparative analysis of each model's performance and efficiency, contrasting single-task and multi-task approaches across the different adaptation strategies.
+	
+	\item \textbf{Chapter 5 - Conclusion:} Summarizes the main contributions and findings of this work. It discusses the implications of the results in relation to the initial objectives and proposes potential avenues for future research.
+\end{itemize}
+
+
+\chapter{Literature Review}
+This chapter reviews the foundational concepts, technologies, and methods central to this thesis.
+It first covers the foundational architecture, the Vision Transformer, and the Vision Language Model paradigm that leverages it for large-scale pre-training. This is followed by a review of Perception Encoders, the specific, state-of-the-art model chosen for this work. With the tool established, the review addresses the problem domain by surveying current literature on Facial Expression Recognition and Age Estimation. Finally, the chapter details the key adaptation methodology, Parameter-Efficient Fine-Tuning with LoRA, and the Datasets used in our experiments.
+\section{Vision Transformers}
+Vision Transformers (ViT)\cite{vit} are an adaptation of the transformers encoder architecture \cite{transformers} for computer vision task. The main innovations lie in how the input images are converted from the 2D spatial representation to a 1D embedding sequence called \textit{patch embeddings}: given an input image \(x \in \mathbb{R}^{H \times W \times C}\), it gets split into \(N=HW\//P^2\) patches of dimension \((P,P)\). These \(N\) patches of resolution \((P,P)\) get flattened and get mapped to \(D_{model}\) dimension with a trainable linear projection. These process can be efficiently done with a single convolution, by setting the kernel dimension equal to the desired patch size \(P\) and stride equal to \(P\). In the original ViT article, at this point the \((N, D_{model})\) gets summed with a 1D learnable positional embedding (differently from the original transformers, where positional information is encoded trough sinusoidal positional encoding), and gets prepended  with a \([CLS]\) token. Alternatively, Rotary Position Embedding \cite{rope} and attention pooling heads have become a popular \cite{pe,dinov3,siglip2} alternative to respectively encode positional information and obtain a single comprehensive embedding. 
+
+\begin{lstlisting}[language=Python, caption={Spatial to sequence and embedding in ViT, Pytorch code snippet},basicstyle=\small\ttfamily\linespread{1}\selectfont]
+# A convolutional layer is efficiently used in ViTs 
+# to pass from a 2D image
+# to a sequence of patch embeddings
+...
+class VisionTransformer(nn.Module):
+
+	def __init__(self, d_model=768, patch_size=16, ...):
+		...
+		self.d_model = d_model # embedding dimensions of image patches
+		self.patch_size = patch_size # height and width of the image have to be divisible by the patch_size
+		
+		# no overlap between patches, as stride=kernel_size
+		self.conv1 = nn.Conv2d(
+			in_channels=3,
+			out_channels=d_model,
+			kernel_size=patch_size,
+			stride=patch_size,
+			bias=False,
+		)
+		...
+	def forward(self,x):
+		# x is shaped as such: [B, 3, h, w]
+		batch, channels, h, w = x.shape
+		
+		# Applying the convolutional layer to create patch embeddings
+		x = self.conv1(x) # [B, 3, h, w]->[B, d_model, h//ps, w//ps]
+		
+		# Reshaping to obtain a sequence [B, (h//ps)*(w//ps), d_model]
+		xseq = x.permute(0, 2, 3, 1).reshape(batch, -1, d_model)
+		...
+	
+\end{lstlisting}
+The core component of ViT is the transformer block, that implements multi-head self-attention: 
+
+given the input patch embeddings \(X \in \mathbb{R}^{N \times d_{model}}\), it is projected into queries (Q), keys (K), and values (V) for each of the \(h\) attention heads:
+\[
+Q_i, K_i, V_i = X W_i^Q, X W_i^K, X W_i^V
+\]
+where \(W_i^Q, W_i^K, W_i^V \in \mathbb{R}^{d_{model} \times d_k}\)  are learnable weight matrices for the \(i\)-th head and \(k\) usually equal to \(d_{model} // h\).
+
+The attention for each head is then computed using scaled dot-product attention:
+\[
+\text{head}_i = \text{Attention}(Q_i, K_i, V_i) = \text{softmax}\left(\frac{Q_i K_i^T}{\sqrt{d_k}}\right) V_i
+\]
+
+The outputs of the attention heads are concatenated and then linearly projected to produce the output:
+\[
+\text{MultiHead}(Q, K, V) = \text{Concat}(\text{head}_1, \dots, \text{head}_h) W^O
+\]
+where \(W^O \in \mathbb{R}^{h d_v \times d_{model}}\) is another learnable weight matrix.
+This process transform each patch embedding, transforming them in contextualized representations by aggregating information from all other patches based on learned attention patterns. These process is both one of the main strength and weakness of the transformer block. As each patch has to attend to every other patch, it can capture long-range relationship, but the computational complexity of the multi-head self-attention operation is \(O(N^2 \times d_{model})\) with respect to the image size. In fact, to address this issue, alternative architectures such as Swin Transformers \cite{swin} achieve linear complexity respect to image size by introducing a window-based self-attention mechanism that computes attention locally within non-overlapping windows.
+After the multi-head attention operation, each patch embedding pass trough a feed forward network (FFN). Algorithmically, the transformer block can be describe like this, taking also in account layer normalization and skip connections typically found in most implementations:
+\begin{align*}
+	X_{norm_1} &= \text{LayerNorm}(X) \\
+	Z_0 &= \text{MultiHeadAttention}(X_{norm_1}) \\
+	X' &= X + Z_0 \\
+	X'_{norm} &= \text{LayerNorm}(X') \\
+	Z_1 &= \text{FFN}(X'_{norm}) \\
+	X_{out} &= X' + Z_1
+\end{align*}
+As \(X_{out}\) is shaped exactly as \(X\), transformer blocks can be easily stacked, to obtain deep networks.
+
+A major difference of ViT respect convolutional neural networks (CNN) is the lack of image-specific inductive biases: convolution is a process that explicitly encodes 2D spatial locality and translation equivariance, whereas the transformer architecture treats the input as a sequence of patches without assuming such priors. This causes ViTs to under-perform, compared to CNN, when trained from scratch on mid-sized dataset\footnote{DeiT \cite{deit} addresses this problem with \textit{distillation through attention}, adding a token to the input called the 'distillation token'. This token is dedicated to reproducing the teachers  decision by minimizing the cross-entropy loss between the logits predicted on this new token and the label predicted by the teacher model.}, but to excel when pre-trained on large datasets and then adapted to down-stream tasks \cite{vit}. Pre-training of ViTs can be divided in three major category:
+\begin{itemize}
+	\item \textbf{Supervised pre-training:} the ViT is pre-trained on big human-annotated datasets, like JFT-300M and ImageNet-21k, for an image classification tasks. The original ViT \cite{vit} is an example of Vision Transformer that underwent this kind of training.
+
+	
+	\item \textbf{Self-supervised pre-training:} the ViT is pre-trained on a dataset of un-labeled images. There are many possible training objectives \cite{sslvit}, among theme there are: masked patch prediction, where part of the patch embeddings are masked and the model is trained to predict the original content of the masked patches; contrastive learning, which aims to learn representations that are invariant to data augmentations. This is achieved by creating different augmented "views" of an image and training the model to maximize the similarity between representations of the same image while minimizing the similarity with representations of different images. Popular ViT trained in such manner are BEiT,  BERT Pre-Training of Image Transformers \cite{beit} and the DINO family of models \cite{dinov1,dinov2,dinov3} 
+	
+	\item \textbf{Natural Language Supervision: } the ViT is pre-trained on huge dataset of image-text pairs. As this approach is at the base of vision language models, that are of particular interest for this thesis, we will go on more detail in the following paragraph.
+\end{itemize}
+ViTs have been successfully applied in many fields of computer vision with strong performance, such as in image/video recognition, object detection and semantic segmentation, and have also sparked the development a plethora of new architectures \cite{survey_vit_hvt}. 
+
+\section{Vision Language Models}\label{ch:vlms}
+Vision Language Models (VLMs) represent a significant step in AI, creating models that can understand images and text within a single, unified framework. Their development mirrors the trajectory of Large Language Models (LLMs): both rely on new architectures designed to process massive datasets and, crucially, new training objectives that can extract a learning signal from vast, unlabelled (or weakly-labelled) data found on the internet. 
+For the case of VLMs, the dataset are composed on vast collections of image-text pairs (e.g. \ref{fig:twosamples}) that can be scraped from the internet.
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}[b]{0.45\linewidth}
+		\includegraphics[width=\linewidth]{images/sample.PNG}
+		\caption{Example of an image-text pair}
+		\label{fig:samplevlm}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.45\linewidth}
+		\includegraphics[width=\linewidth]{images/sample2.PNG}
+		\caption{Another, more "noisy" sample}
+		\label{fig:samplevlm2}
+	\end{subfigure}
+	\caption{Two example image-text pairs that may be used to train a VLM, obtained from University Of Salerno Wikipedia page}
+	\label{fig:twosamples}
+\end{figure}
+
+With this huge amount of data, VLMs are pre-trained to learn joint vision–language representations in a shared semantic space where images and text referring to the same concept are projected into nearby regions. The first successful VLM trained with these approach is CLIP (Contrastive Language-Image Pre-training), introduced by OpenAI in 2021 \cite{clip}. CLIP is based on a "two-tower" architecture, presenting an image encoder such as a ViT\footnote{Also ResNet has been used as image encoder, but ViT outperforms it}, to produce an image embedding, and a text encoder, based on transformers blocks. These encoders are trained on scratch to project their respective vector embedding of images and texts containing the same semantic meaning, for example \ref{fig:samplevlm}, into nearby regions. This is achieved by introducing a contrastive learning objective. The goal is to train the two encoders so that in a batch of $N$ (image, text) pairs, the $N$ correct pairs have a high similarity score, while the $N^2 - N$ incorrect pairs have a low similarity score. This is implemented using a symmetric cross-entropy loss over the similarity scores, often referred to as the InfoNCE loss. The model's task is, for any given image, to "find" its correct text caption from all $N$ text captions in the batch (and vice-versa). The pseudocode provided in the original CLIP paper illustrates this core mechanism:
+\\
+\\
+\begin{lstlisting}[language=Python, caption={Numpy-like pseudocode for the core of an implementation of CLIP},basicstyle=\small\ttfamily\linespread{1}\selectfont]
+# image_encoder - ResNet or Vision Transformer
+# text_encoder - Text Transformer
+# I[n, h, w, c] - minibatch of aligned images
+# T[n, l] - minibatch of aligned texts
+# W_i[d_i, d_e] - learned proj of image to embed
+# W_t[d_t, d_e] - learned proj of text to embed
+# t - learned temperature parameter
+
+# extract feature representations of each modality
+I_f = image_encoder(I) #[n, d_i]
+T_f = text_encoder(T) #[n, d_t]
+
+# joint multimodal embedding [n, d_e]
+I_e = l2_normalize(np.dot(I_f, W_i), axis=1)
+T_e = l2_normalize(np.dot(T_f, W_t), axis=1)
+
+# scaled pairwise cosine similarities [n, n]
+logits = np.dot(I_e, T_e.T) * np.exp(t)
+
+# symmetric loss function
+labels = np.arange(n) # The ground-truth is the diagonal
+loss_i = cross_entropy_loss(logits, labels, axis=0)
+loss_t = cross_entropy_loss(logits, labels, axis=1)
+loss = (loss_i + loss_t)/2
+\end{lstlisting}
+A critical component of this training paradigm is the batch size $N$. Given the inherently noisy nature of web-scraped data (e.g. \ref{fig:samplevlm2}), where image-text alignment may be weak, the signal from any single positive pair is unreliable. The contrastive loss compensates for this by leveraging a massive number of negative examples. Consequently, $N$ must be sufficiently large to ensure the gradient is stable and informative. The original CLIP, for instance, was trained with a batch size of 32,768, making the computation highly demanding but essential for learning a robust joint embedding space from noisy supervision. The resulting model is a powerful set of encoders, for which the most common application is zero-shot classification. Given an image, the model can classify it among an arbitrary set of textual class descriptions (e.g., "a photo of a dog", "a rendering of a car") without any further training. This is achieved by embedding the image and all text prompts, and then predicting the class corresponding to the text embedding with the highest cosine similarity to the image embedding. Beyond zero-shot inference, the learned encoders, particularly the image encoder, serve as a strong backbone for various downstream tasks, such as linear probing, image retrieval, and as a visual feature extractor for more complex models, capable of task such object detection and semantic segmentation. While the CLIP architecture was foundational, many modern VLMs diverge from this "train from scratch" methodology and two tower architecture. Instead, they leverage the powerful, pre-existing capabilities of large pre-trained LLMs: this new paradigm avoids the training a text encoder from scratch and instead focuses on "aligning" a pre-trained, image encoder (often a ViT trained with CLIP's objective) to a pre-trained, frozen LLM \cite{llava,blip2}. Conversely, an alternative frozen image-encoder paradigm has also been explored: a powerful, pre-trained vision encoder, such as DINOv2 or DINOv3 \cite{dinov2meetstext,dinov3}, is frozen, and a text encoder is trained from scratch to align with its rich, fixed representations.
+
+
+\section{Perception Encoders}\label{par:pe}
+Perception encoders (PE) are a family of VLM released by Meta FAIR in 2025 \cite{pe}. They consist of a "CLIP" style pre-trained VLM, called "PE Core", from which other two VLMs have been produced: "PE Spatial", for "spatial" downstream task, such as detection and segmentation; and "PE Lang", aligning the powerful vision encoder to a pre-trained LLM (Llama 3.1).
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\linewidth]{images/pePNG.PNG}
+	\caption{The perception encoder family of models}
+	\label{fig:pe_family}
+\end{figure}
+The $PE_{core}$ VLM follows a classic two-tower architecture, utilizing a ViT for the visual component and a text transformer for the textual component. Deviating from the trend of multi-objective pretraining, $PE_{core}$ relies exclusively on a vision-language contrastive loss for its initial training. This approach is enabled by a "robust image pretraining recipe" on a 5.4B image-text pairs, which enhances the standard CLIP training with several innovations. Key components include: progressive resolution training for efficiency; an increased batch size of 64K; the LAMB optimizer to stabilize large-batch training; 2D Rotary Position Embeddings; attention pooling to create the final embedding; and a novel mask regularization loss that aligns masked tokens with their unmasked counterparts. Following this initial pretraining, a second stage extends the model's capabilities to the video domain. This is achieved by finetuning the model on 22 million videos using synthetically generated captions. Video embeddings are created by average pooling features from 8 uniformly sampled frames , which are then aligned to the text captions using the same contrastive loss. Finally, a third stage uses knowledge distillation to transfer the capabilities of the large G-scale model to the smaller B and L-scale models.
+\input{tables/pecore.tex}
+\input{tables/benchpe.tex}
 
 
 
 
+\newpage
+\section{Facial Expression Recognition, solutions in the literature}
+In the field of Facial Expression Recognition, the research literature has been largely dominated by deep learning methodologies. CNNs set the benchmark for performance, as they are more able to learn from scratch on the size of the available dataset for FER, thanks to their inductive biases and ubiquitous ResNet architecture. Building upon this strong foundation, recent experimentation with hybrid models that combine CNNs and ViTs is proving to be a highly competitive and promising direction. Some notable models that have shown strong performance are: 
+\begin{itemize}
+	\item \textbf{ResEmoteNet} \cite{resemotenet}, is the current state of the art model for FER, achieving the number one spot on accuracy on popular FER dataset like RAF-DB and AffectNet. It presents an architecture based on convolutional neural networks, residual blocks (ResNets) and squeeze and excitation blocks (SENet), and has been trained on the following datasets: FER2013, RAF-DB, AffectNet-7 and ExpW.
+	\begin{center}
+		\includegraphics[width=0.8\linewidth]{images/resemotenet.png}
+		\captionof{figure}{ResEmoteNet architecture}
+	\end{center}
+	\item \textbf{APViT} \cite{apvit}, employs an hybrid approach, combining CNN and ViT. Instead of having a shallow "CNN" to embed an image in patch embeddings, it employs a deeper CNN based network (first three stages of ir50 pre-trained on Ms-Celeb-1M) to obtain a first feature map. This features map gets then filtered by only picking top-k token, by choosing only the one with the higher activations. This process has the goal of eliminating the less discriminative part of the face image such as the background and hairs. Then this token are passed to ViT network, with a [CLS] token, and still get gradually dropped, by considering the attention score between an image-token and the [CLS] token.
+	\begin{center}
+		\includegraphics[width=0.8\linewidth]{images/appvit.png}
+		\captionof{figure}{APViT approach, discarding less informative areas}
+	\end{center}
+	\item \textbf{POSTER++}\cite{poster}, is built upon a dual-backbone system. It uses a frozen MobileFaceNet for facial landmark detection and an ir50 network, pre-trained on Ms-Celeb-1M, for visual feature extraction. Features are drawn from both models at various scales and are then merged using cross-attention modules. The resulting concatenated features are processed by a compact, two-layer ViT to generate the final embedding that is fed to a classifier.
+    \begin{center}
+		\includegraphics[width=0.99\linewidth]{images/posterpp.jpg}
+		\captionof{figure}{POSTER++ dual-backbone architecture}
+	\end{center}
+\end{itemize} 
 
-\section{Literature Review}
 
-\subsection{Vision Transformers}
+\section{Age estimation, solutions in the literature} 
+In age estimation, deep learning is the dominant methodology. Foundational CNNs, such ResNets and VGGs, remain a widely used and relevant models, while the research landscape has also expanded to include newer architectures like ViTs and attention based mechanisms.
+Regarding the methodologies, the problem is generally framed in one of three ways: regression, that treats age as a continuous variable (e.g., "34.5 years"); age-group classification, assigning a person to a discrete category (e.g., "20-29") and ordinal regression, that decomposes the prediction into a sequence of binary classification tasks, with different granularity, each corresponding to whether the age exceeds a specific threshold (e.g., "Is age $>$ 10?", "Is age $>$ 20?", "Is age $>$ 30?").
+Notable models that have shown strong performance are: 
+\begin{itemize} 
+	\item \textbf{MIVOLO (Multi Input VOLO)} \cite{mivolo2023,mivolo2024}, is a state-of-the-art model that integrates age and gender estimation into a unified, dual-input network. It is built upon the VOLO vision transformer backbone. The architecture is designed to leverage not only facial information but also person/body image data, which improves generalization and allows it to provide satisfactory results even when the face is not visible. Moreover the author collected also a new dataset (LAGENDA) and achieved SOTA results on five major benchmarks. 
+	
+	\begin{center}
+		\includegraphics[width=0.8\linewidth]{images/mivolo.png}
+		\captionof{figure}{MiVolo dual-input approach}
+	\end{center}
+	\item \textbf{CoRAL (Rank consistent ordinal regression)} \cite{coral}, is not a specific model architecture but a training methodology that frames age estimation as ordinal regression with the the addition of a rank consistency constraint. This constraint resolves logical contradictions by guaranteeing that the model's predictions follow the natural ordinal sequence; for example, it ensures that if the model predicts an age is $>$30, it is forced to also predict the age is $>$20. The authors demonstrated this methodology by applying it to a ResNet-34 backbone, which they named CORAL-CNN.
+	\begin{center}
+		\includegraphics[width=0.8\linewidth]{images/coral.png}
+		\captionof{figure}{CORAL ordinal ranking formulation, with consistency constraint}
+	\end{center}
+\end{itemize}
 
-\subsection{Vision Language Models}
 
-\subsection{ciao}
 
-\subsection{Parameter-Efficient Fine-Tuning through LoRA}
+\section{Parameter-Efficient Fine-Tuning through LoRA}
 Low-rank adaptation (LoRA) \cite{lora} is a technique first introduced to fine-tune Large Language Models (LLMs) that has also shown successful results in computer vision tasks \cite{lora_in_vits} and image and video generation tasks. The core hypothesis of LoRA is that weight updates during the adaptation of a large pre-trained model to a new task have a low “intrinsic rank”. This can be mathematically described as such: given a pre-trained weight matrix \(W_o \in \mathbb{R}^{d \times k}\), the weight update matrix  $\Delta W$  can be approximated  as $\Delta W = BA$ where  \(B \in \mathbb{R}^{d \times r}\) and \(A \in \mathbb{R}^{r \times k}\) with the rank \(r<<min(d,k)\) . 
 Given this hypothesis, during training, \(W_o\) can be frozen and not receive any gradient updates, and we can reformulate the forward pass as such: \(h = W_ox + BAx\)
 
-\begin{lstlisting}[language=Python, caption={LoRA pytorch code snippet}]
-# dense_pt, a pre-trained nn.Linear module
-dense_pt.requires_grad = False 
-k = dense_pt.in_features
-d = dense_pt.out_features
-rank = 64 # rank << min(k, d)
-lora_A = nn.Parameter(torch.zeros(rank, k))
-lora_B = nn.Parameter(torch.zeros(d, rank))
-nn.init.normal_(self.lora_A, mean=0.0, std = (1 / rank))
 
-def forward_lora(x, lora_A, lora_B, dense_pt):
-    # original model output
-    pt_model_output = dense_pt(x)
 
-    # the matrix product of lora_B @ lora_A results in
-    # a [d,r] @ [r,k] = [d,k] shaped matrix
-    # that is of equal shape of the un-approximesed weight update
-    lora_output = lora_B @ lora_A @ x
-
-    return F.ReLU(pt_model_output + lora_output)
-    
-\end{lstlisting}
 This approach has several significant benefits, making it a highly efficient and practical method for adapting large models:
 \begin{itemize}
     \item \textbf{Reduced Number of Trainable Parameters:} By freezing the large pre-trained weight matrix \(W_o\) and only optimizing the low-rank matrices \(A\) and \(B\), LoRA drastically cuts down the number of parameters that need to be updated during training. This makes the fine-tuning process significantly less computationally intensive.
@@ -113,16 +397,42 @@ This approach has several significant benefits, making it a highly efficient and
     \item \textbf{No Added Inference Latency:} After training, the weight update can be merged directly into the original weights by computing \(W = W_o + BA\). This means the model architecture remains unchanged during inference, and there is no additional computational overhead or latency compared to the original pre-trained model.
 \end{itemize}
 
+
+\begin{lstlisting}[language=Python, caption={LoRA pytorch-like code snippet},basicstyle=\small\ttfamily\linespread{1}\selectfont]
+# dense_pt, a pre-trained nn.Linear module
+dense_pt.requires_grad = False 
+k = dense_pt.in_features
+d = dense_pt.out_features
+rank = 64 # rank << min(k, d)
+lora_A = nn.Parameter(torch.zeros(rank, k))
+lora_B = nn.Parameter(torch.zeros(d, rank))
+nn.init.normal_(self.lora_A, mean=0.0, std = (1 / rank))
+	
+def forward_lora(x, lora_A, lora_B, dense_pt):
+	# original model output
+	pt_model_output = dense_pt(x)
+	
+	# the matrix product of lora_B @ lora_A results in
+	# a [d,r] @ [r,k] = [d,k] shaped matrix
+	# that is of equal shape of the un-approximesed weight update
+	lora_output = lora_B @ lora_A @ x
+	
+	return F.ReLU(pt_model_output + lora_output)
+	
+\end{lstlisting}
+
+
 Moreover, LoRA can perform just as well as full fine-tuning in some cases \cite{lora, lora_in_vits}, but as task complexity increases, full fine-tune may still outperform LoRA considerably \cite{lora_learnforgets}.
 The success of this methodology has inspired many other studies on parameter-efficient adaptation trough  low-rank decomposition \cite{peft_review}: Weight-Decomposed Low-Rank Adaptation (DoRA) \cite{Dora} enhances LoRA by decomposing the \(W_o\) weight matrix in its magnitude vector \(m \in \mathbb{R}^{1 \times k}\) and its direction matrix \(V \in \mathbb{R}^{d \times k}\), and directly trains the magnitude vector and uses LoRA to train the direction matrix; QLoRA \cite{qlora} focuses on drastic reduction of VRAM requirements while maintaining performance through quantization; LoRA+ \cite{lora_plus} proposes to set an higher learning rate to the B matrices, to more optimally fine-tune models with larger embedding dimension. 
 Furthermore, solutions like mLoRA \cite{mlora} have been developed to efficiently train numerous adapters in parallel by leveraging a single shared base model. Subsequently, for inference, systems such as S-LoRA \cite{slora} and B-LoRA \cite{BLoRA} can serve multiple  adapters concurrently, batching requests for different tasks to transform the single large model into an efficient multi-task network.
 
 
-\subsection{Datasets Review}
-In the following paragraphs we list all the datasets used for the training, validation and testing of our models. Each dataset has been moreover processed to obtain the crop of the faces\footnote{It is not obvious that for our tasks taking the crop of only faces is optimal, but is necessary due to the varied nature of images, which include both full-body and close-up. This preprocessing step ensures a uniform input for the models.}, using the DNN available in the following \href{https://github.com/sr6033/face-detection-with-OpenCV-and-DNN}{repository}, or using the already provided bounding boxes by the authors. For each training set listed below, also a validation set will be extracted doing an 80-20 split. 
+\section{Datasets Review}
+\label{ch:dataset_review}
+In the following paragraphs we list all the datasets used for the training, validation and testing of our models. Each dataset has been moreover processed to obtain the crop of the faces\footnote{It is not obvious that for our tasks taking the crop of only faces is optimal, but is necessary due to the varied nature of images, which include both full-body and close-up. This preprocessing step ensures a uniform input for the models.}, using a DNN (\texttt{res10\_300x300\_ssd\_iter\_140000\_fp1}) and the OpenCV library, or using the already provided bounding boxes by the authors if present. For each training set listed below, also a validation set will be extracted doing an 80-20 split. 
 
-\subsubsection{FairFace}
-The FairFace dataset \cite{fairface} contains 108,501 images, with an emphasis on balanced ethnicity composition. The faces are labeled for gender and age groups. It is from the FairFace dataset that we take the 9 age groups for our age classification tasks. In our experiments the FairFace dataset is used both for training and testing, using the split provided by the authors.
+\subsection{FairFace}\label{ch:fairface}
+The FairFace dataset \cite{fairface} contains 108,501 images, with an emphasis on balanced ethnicity composition. The faces were collected from the larger  YFCC100M dataset, and labeled trough crowdsourcing  for gender and age groups. It is from the FairFace dataset that we take the 9 age groups for our age classification tasks. In our experiments the FairFace dataset is used both for training and testing, using the split provided by the authors.
 \begin{figure}[H] 
     \centering
     \begin{subfigure}[b]{0.45\textwidth}
@@ -142,7 +452,7 @@ The FairFace dataset \cite{fairface} contains 108,501 images, with an emphasis o
     \label{fig:fairface}
 \end{figure}
 
-\subsubsection{UTKFace}
+\subsection{UTKFace}
 The UTKFace dataset \cite{utkface} contains 24,103 images, labeled with ages and gender. The age range spans from 0 to 116 years old. In our experiments the UTKFace dataset will be used only for testing purposes, providing a benchmark for the model's cross-dataset generalization capabilities.
 \begin{figure}[H]
     \centering
@@ -151,18 +461,23 @@ The UTKFace dataset \cite{utkface} contains 24,103 images, labeled with ages and
     \label{fig:utkface}
 \end{figure}
 
-\subsubsection{Lagenda}
-The Lagenda dataset \cite{mivolo2023} \cite{mivolo2024} provides 67,159 images, labeled with age and gender. The age range spans from 0 to 95 years, and is fairly balanced on the age range going from 3 to 69 years old. In our experiment, the Lagenda dataset will be used only for training purposes.
+\subsection{Lagenda}
+The Lagenda dataset \cite{mivolo2023} \cite{mivolo2024} contains 67,159 samples, each with labels for gender and age (ranging from 0 to 95). The dataset contains minimal celebrity data, to better reflect the real-world, in-the-wild scenario. All samples were annotated through a crowdsourcing platform, where trained and verified annotators assigned both a gender and an age to each individual. The final labels were determined using a voting mechanism based on 10 independent annotations for both age and gender.
+The dataset was constructed to be balanced by age distribution (in 5-year groups) up to 65 years, while also ensuring gender balance within each group, as illustrated in Figure \ref{fig:lagenda}.
+In our experiment, the Lagenda dataset will be used only for training and validation purposes.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.6\textwidth]{dataset_graphs/Lagenda_train_distribution.pdf}
-    \caption{UTKFace Dataset Distribution (Test Set)}
+    \caption{Lagenda Dataset Distribution}
     \label{fig:lagenda}
 \end{figure}
 
-\subsubsection{RAF-DB}
-The RAF-DB dataset \cite{raf-db} provides 14,388 images, labeled with gender and facial emotion. The facial emotion classes are the following: "Surprise", "Fear", "Disgust", "Happy", "Sad", "Angry", and "Neutral". The RAF-DB dataset will be used both for training and testing, (come abbiamo lo split?). The samples labeled for emotion are by far the fewest and are also unbalanced; in chapter (capitolo in cui spieghiamo sampling) we explain how we tackle this problem.
+\subsection{RAF-DB}
+The RAF-DB (Real-world Affective Face) dataset \cite{raf-db}, is one of the reference datasets for emotion recognition tasks. The samples in it are based on the seven basic emotions theorised by Ekman: "Surprise", "Fear", "Disgust", "Happy", "Sad", "Angry", and "Neutral", and are also labeled for gender.
+All samples have been rigorously annotated by 40 qualified annotators. The labels were then refined by performing a validation based on an Expectation-Maximization algorithm to remove noisy labels, achieving a Cronbach's alpha\footnote{Cronbach's alpha is a measure of internal consistency, used to assess the reliability of a set of items or, in this case, annotations.} coefficient of 0.996, indicative of high reliability.
+The samples labeled for emotion are by far the fewest in our combined dataset and, as noted, are highly unbalanced; in chapter \ref{ch:balanced_sampling} we explain how we tackle this problem.
+The RAF-DB dataset will be used for both training and testing.
 \begin{figure}[H]
     \centering
     \begin{subfigure}[b]{0.45\textwidth}
@@ -182,39 +497,876 @@ The RAF-DB dataset \cite{raf-db} provides 14,388 images, labeled with gender and
     \label{fig:rafdb}
 \end{figure}
 
-\subsubsection{VggFace2}
-The VggFace2 \cite{vggface2} dataset contains 3.31 million images of 9131 subjects, labeled by gender. Moreover, each samples has been also labeled with age using (modello usato per la label di età). In our experiments the VggFace2 dataset will be used only for testing, providing a well enstablished benchmark dataset for our tasks. The choice to exclude the VggFace2 for training is to avoid to bring an heavy bias on picture of celebreties and limit the training time required. (menzoniamo il fatto che gli esperimenti fatti con vggface2 non sembrano portare a buoni risultati?)
-
+\subsection{VggFace2}
+The VggFace2 \cite{vggface2} dataset contains 3.31 million images of 9131 subjects, labeled by gender. Moreover, each samples has been also labeled with age, with the process documented in \cite{Greco2022}. In our experiments the VggFace2 dataset will be used only for testing, providing a well established benchmark dataset for our tasks. The choice to exclude the VggFace2 for training is to avoid to bring an heavy bias on picture of celebrities and limit the training time required. 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.6\textwidth]{dataset_graphs/Vgg_test_distribution.pdf}
-    \caption{UTKFace Dataset Distribution (Test Set)}
-    \label{fig:utkface}
+    \caption{VggFace2 Dataset Distribution (Test Set), notably, the age group graph is reported in log-scale}
+    \label{fig:vggface2}
 \end{figure}
 
 
 
-\subsubsection{CelebA-HQ}
+\subsection{CelebA-HQ}
 The CelebaHQ dataset \cite{celeba1} \cite{celeba2} provides 30,000 high-quality images, labeled by gender. In our experiments the CelebaHQ dataset will be used both for training and testing.
-\begin{figure}[H] % Changed from [h!] to [H]
+\begin{figure}[H]
     \centering
     \begin{subfigure}[b]{0.45\textwidth}
         \centering
         \includegraphics[width=\textwidth]{dataset_graphs/CelebA_HQ_train_distribution.pdf}
         \caption{Train Set Distribution}
-        \label{fig:fairface_train}
+        \label{fig:celeba_train}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.45\textwidth}
         \centering
         \includegraphics[width=\textwidth]{dataset_graphs/CelebA_HQ_test_distribution.pdf}
         \caption{Test Set Distribution}
-        \label{fig:fairface_test}
+        \label{fig:celeba_test}
     \end{subfigure}
-    \caption{FairFace Dataset Distribution}
-    \label{fig:fairface}
+    \caption{CelebA-HQ Dataset Distribution}
+    \label{fig:celeba_distribution}
 \end{figure}
 
+
+\chapter{Methodology}
+In this chapter will go over the techniques used to adapt the pre-trained model for the three tasks of our interest. The model that will be the focus of our experiment is the vision encoder of the already introduced Perception Encoders \ref{par:pe}, in particular our focus will be on the vision transformer "PE-Core-L/14 336px". This model has been chosen for two reasons: its strong performance on popular benchmark datasets in zero-shot classification settings, that can be seen in table \ref{tab:pebench}, and the open-source availability of the model code.
+For each of the proposed solutions, both a single-task and multi-task approach has been explored.
+\section{Shared training settings} 
+The proposed solutions all share some common approaches, that we will list and explain in this paragraph. 
+
+\begin{itemize}
+	\item \textbf{Optimizer: AdamW}, the AdamW \cite{adamW} is an enhancement of the Adam optimizer, that decouples the weight-decay regularization with the adaptive learning rate of Adam, making it equivalent to the L2 regularization in the SGD algorithm. 
+	This optimizer has already been used by the authors of Perception Encoders \cite{pe} to adapt and probe the chosen vision encoder, making it a reasonable choice.  As for the choice of the weight-decay value, the authors of Perception Encoder have used an hyper parameter sweep to find the best value, for linear-probing tasks, but as this parameter has not been made public, we chose 0.01 as our weight decay, that is the default value of Pytorch and reasonable for our task.
+	\item \textbf{Scheduler: Reduce on plateau}, the reduce on plateau scheduler lowers by a factor of 10 the learning rate after the validation loss metrics does not improve for 5 epochs.
+	\item \textbf{Automatic mixed precision (AMP) training with Autocast and GradScaler}, AMP is a tool offered by the Pytorch framework that allows the training of a DNN with a lower memory foot-print and in faster times. This is done by using Autocast, that casts to half-precision some operations, like the matrix multiplications in the linear layers and convolutions, while keeping the full precision for operation like reductions (that are typically used when calculating loss values). GradScaler ensures that half-precision gradients with small magnitudes don't get flushed to zero ("underflow"), by scaling them \cite{pytorchamp}. This allows a substantial speed-up in training, while not compromising on accuracy.
+	\item \textbf{Data augmentation and processing}, each image sample is resized to 336px and zero-centered. Moreover each sample is subjected to random "safe" transformations before being fed to the model. This process artificially expands the training set, which enhances the model's ability to generalize and mitigates the risk of overfitting.
+	\begin{lstlisting}[language=Python, caption={Transformation applied to images, Pytorch code snippet},basicstyle=\small\ttfamily\linespread{1}\selectfont]
+	train_transforms = T.Compose([
+		T.RandomHorizontalFlip(),
+		T.ColorJitter(brightness=0.2,contrast=0.2,saturation=0.2),
+		T.RandomAffine(degrees=10,translate=(0.05,0.05), \
+		scale=(0.9,1.1)),
+		T.Resize((336, 336)),
+		T.Normalize([0.5, 0.5, 0.5],[0.5, 0.5, 0.5]),
+		T.RandomErasing(p=0.5,scale=(0.02, 0.2),ratio=(0.3, 3.3)),
+	])
+	\end{lstlisting}
+	
+	This transformation are particularly useful in the multi-task setting and with balanced sampling, as sample gets sampled more than once in the same epoch, this ensures that in an epoch the model never see the exact same image twice.
+	
+	\item \textbf{Loss Functions}, As we are approaching three classification tasks, we use \textbf{Cross Entropy Loss}, with the loss values averaged (mean reduction) over each batch for all tasks. The task-specific loss functions will be unweighted, as we will tackle class unbalance trough sampling \ref{ch:balanced_sampling}. For the age-classification task, also ordinal loss has been explored, has a ordinal relation is present between the labels of the problem, but in preliminary experiments has not shown an higher performance compared to cross-entropy loss.
+	
+\end{itemize}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{images/transforms.PNG}
+	\caption{Data augmentation transformations examples, starting from already cropped and resized image}
+	\label{fig:pre_transform}
+\end{figure}
+
+
+All the training will be done using an early-stop policy, based on validation loss for single-task and average accuracy for multi-task, on validation sets: if after 10 epochs there is no improvement on the validation-set, we stop the training. We switch to average accuracy for multi-task, as it is a more reliable composite metric  for compared to average validation loss, so to avoid being misled by the varying scales of the different task losses. 
+
+The training, validation and testing will be run on an NVIDIA L40S GPU. 
+
+
+Table \ref{tab:dataset_config} recaps how the dataset will be used.
+\input{tables/dataset_usage.tex}
+
+
+
+
+\section{Balanced Sampling}\label{ch:balanced_sampling}
+As it can be seen by the distribution of the datasets that are reported in the dataset review chapter \ref{ch:dataset_review} and by looking at the table \ref{tab:distributions}, for the age and emotion classification tasks we have a very unbalanced datasets. The skewed distributions, if not tackled, would leads toward models with a bias towards the majority class, that do not necessary represents the real distribution. To address the class imbalance, we first compute a weight for each class using the inverse frequency method. Then, for each image, we determine its final sampling weight by averaging the pre-calculated weights of its available age, emotion, and gender labels. These resulting weights are supplied to PyTorch's \texttt{WeightedRandomSampler} to achieve a more balanced class distribution during training.
+
+
+
+
+\input{tables/distribution.tex}
+
+
+\section{Linear probing}
+Linear probing is the simplest and most efficient adaptation strategy, designed to evaluate the raw, out-of-the-box feature quality of a pre-trained encoder. In this methodology, the entire vision encoder backbone, $f_{\theta}$, is "frozen," meaning its parameters $\theta$ do not receive any gradient updates during training.
+
+The adaptation is performed by training only a new classification head, $h_{\phi}$, which is appended to the encoder. This head takes the $d_{model}$ dimensional global embedding from the encoder's attention pooling layer and maps it to the $C$ task-specific classes. We explored two architectures for this head:
+
+\begin{itemize}
+	\item \textbf{Simple Head:} A minimal head consisting of a dropout layer, for regularization, followed by a single linear layer that maps the embeddings directly to the $C$ output classes.
+	
+	\item \textbf{Deeper Head:} A more complex, non-linear head with the following structure:
+	
+	 Dropout $\rightarrow$ Linear($d_{model}$, $d_{model}$) $\rightarrow$ GELU $\rightarrow$ Linear($d_{model}$, $C$).
+\end{itemize}
+
+In our experiments, this deeper head consistently achieved better performance. This suggests that while the pre-trained features $f_{\theta}(x)$ are highly informative, they are not perfectly linearly separable for our specific tasks. The added non-linear projection, allows the model to learn a more complex and robust mapping from the fixed features to the target labels. Given this findings, all other approach will employ a deeper head for classifications (we will keep referring to this approach as linear probing, even if not technically correct).
+Since the gradients from one task cannot influence the parameters of another (as only the mutually exclusive heads are trained), multi-task learning for linear probing is not possible. We therefore train a separate head for each downstream task individually. As mentioned before, this is the least memory footprint demanding method, as only 0.33\% of the parameters will get trained.
+\[
+\begin{aligned}
+	\text{Starting LR:} \quad & 1e-4 \\
+	\text{Trainable parameters:} \quad & 1,058,825 \\
+	\text{Total parameters:} \quad & 320,324,629 \\
+	\text{Percentage of trainable:} \quad & 0.33\%
+\end{aligned}
+\]
+
+\section{Attention probing}
+Attention probing is an extension of the linear probing methodology, offering a slightly deeper level of adaptation. It operates on the hypothesis that while the patch-level features from the pre-trained encoder $f_{\theta}$ are powerful, the default mechanism for aggregating them into a single global embedding, the attention pooling layer, may be sub-optimal for our specific facial analysis tasks. The original pooling mechanism was trained to summarize an entire image for a text caption, whereas our tasks require focusing on specific and potentially subtle facial regions.
+
+In this setup, we freeze the vast majority of the encode, but we "unfreeze" and train the parameters of the attention pooling module, $\theta_{pool}$. This module is responsible for weighting and combining the final patch embeddings into a single $d_{model}$ dimensional vector.
+$$
+\text{logits} = h_{\phi}(f_{\theta_{pool}}(f_{\theta_{backbone}}(x)))
+$$
+By fine-tuning $\theta_{pool}$ alongside the new classification head $h_{\phi}$, the model can adjust how it weights different patch embeddings to construct a global representation that is more discriminative for classifying gender, age, and emotion, rather than relying on the general-purpose summary vector from pre-training.
+
+This approach remains parameter-efficient, as the attention pooling layer represents a small fraction of the total model parameters. Moreover, because the weights of the pooling layer are now trainable, we add a batch normalization layer immediately before the classification head to stabilize its inputs; this layer will be present in all subsequent methods as well.
+\[
+\begin{aligned}
+	\text{Starting LR:} \quad & 1\text{e}-4 \\
+	\text{Trainable parameters:} \quad & 13,656,073 \\
+	\text{Total parameters:} \quad & 320,324,629 \\
+	\text{Percentage of trainable:} \quad & 4.29\%
+\end{aligned}
+\]
+
+\section{Fine-tuning}
+Full Fine-tuning the pre-trained weights of the encoder would require the unfreezing and training of all of the ~320 million parameters of the vision encoder, for our setup this is not possible and neither particularly convenient. Firstly, training a model of this size is computationally prohibitive, requiring VRAM  exceeding the capacity of our available hardware. Secondly, even with sufficient hardware, fine-tuning such a large model on our relatively limited datasets carries a very high risk of overfitting. Finally, updating the entire network risks catastrophic forgetting, where task-specific gradients could destroy the powerful, generalized knowledge acquired during the initial 5.4 billion pair pre-training. Given these constraints, we adopt a compromise strategy: partial fine-tuning. In this approach, we freeze the vast majority of the encoder and only unfreeze the parameters of the final four transformer blocks. The new classification head $h_{\phi}$ and the attention pooling layer $\theta_{pool}$ are also unfrozen and trained. Unfreezing only the final layers is a common technique to adapt large pre-trained models. It allows the model to adjust its final output representations for the new task while keeping the foundational parameters stable. To train with this approach we employ a differential learning rate: the newly initialized classification head $h_{\phi}$ and the unfrozen attention pooling layer $\theta_{pool}$ are trained with a learning rate of 1e-4. In contrast, the pre-trained weights of the final four transformer blocks are updated with a smaller learning rate of 1e-5 (one-tenth of the head's LR). 
+\[
+\begin{aligned}
+	\text{Starting LR Head:} \quad & 1\text{e}-4 \\	
+	\text{Starting LR Backbone:} \quad & 1\text{e}-5 \\	
+	\text{Trainable parameters:} \quad & 64,040,969 \\
+	\text{Total parameters:} \quad & 320,324,629 \\
+	\text{Percentage of trainable:} \quad & 20.13\%
+\end{aligned}
+\]
+
+\section{Parameter-efficient fine-tuning}\label{ch:peft}
+In this approach, we apply the Low-Rank Adaptation (LoRA) methodology, previously detailed in the literature review, to adapt the vision encoder. Instead of fine-tuning a specific subset of layers, we freeze the entire pre-trained backbone $f_{\theta}$. We then inject trainable LoRA adapters into \textbf{every linear layer} within the backbone, with a \textbf{rank of 64}, targeting to half the number of trainable parameters compared to the partial fine-tuning method. We do not use a scaling factor for the LoRA update.
+
+This comprehensive adaptation includes the Query ($W^Q$), Key ($W^K$), Value ($W^V$), and Output ($W^O$) projection matrices in the multi-head attention mechanisms, as well as the two linear layers of the Feed-Forward Network (FFN), across all 24 transformer blocks. Furthermore, the attention pooling layer is also adapted using this same LoRA technique. The only components trained with their full parameters are the new classification head $h_{\phi}$.
+
+We also adopt the LoRA+ optimization, which was shown to be more effective for large-embedding models like our $d_{model}=1024$ backbone . This method addresses a suboptimality in the original LoRA by setting different learning rates for the adapter matrices $A$ and $B$. We set the learning rates according to the ratio $\eta_B = \lambda \eta_A$, which allows for more efficient feature learning, particularly in terms of time of convergence. Based on the empirical findings presented in the article, we use the recommended fixed ratio $\lambda=6$. We still employ a differential learning rate, by setting to $1e-5$ the learning rate of the LoRA matrices in the backbone and to $1e-4$ the learning rate for the LoRA matrices in the attention pooling layer.
+
+
+Furthermore, we also used DoRA: \textbf{Weight-Decomposed Low-Rank Adaptation}. We already mentioned this method briefly in the literature review, the core technique involves decomposing a pre-trained weight matrix, $W_{0} \in \mathbb{R}^{d \times k}$, into two separate components: a magnitude vector, $m \in \mathbb{R}^{1 \times k}$, and a direction matrix, $V \in \mathbb{R}^{d \times k}$. This decomposition is initialized based on the pre-trained weight $W_0$, with the magnitude $m = \|W_0\|_c$ and the direction $V = W_0$. The term $\|\cdot\|_c$ represents the vector-wise norm across columns.
+
+During fine-tuning, DoRA updates both of these components. To maintain parameter efficiency, it specifically applies a LoRA update, $\Delta V = BA$, to the directional component, while the magnitude $m$ is treated as a separate trainable vector. The final adapted weight $W^{\prime}$ is then calculated as such:
+$$
+	W^{\prime} = m \frac{V + \Delta V}{\|V + \Delta V\|_{c}} = m \frac{W_{0} + BA}{\|W_{0} + BA\|_{c}}
+$$
+
+\begin{center}
+	\includegraphics[width=0.8\linewidth]{images/dora.png}
+	\captionof{figure}{DoRA approach}
+\end{center}
+
+This approach aims to enhance the learning capacity and training stability of LoRA, making its learning behavior more closely resemble that of full fine-tuning. A key advantage is that, like LoRA, DoRA does not introduce any additional inference overhead, as the adapted magnitude $m$ and the final directional component can be merged back into a single weight matrix $W^{\prime}$ after training.
+
+\[
+\begin{aligned}
+	\text{Starting LR } (\eta_A): \quad & 1\text{e}-5 \\	
+	\text{LoRA+ Ratio } (\lambda): \quad & 6 \\
+	\text{Trainable parameters:} \quad & 29,352,981 \\
+	\text{Total parameters:} \quad & 346,504,213 \\
+	\text{Percentage of trainable:} \quad & 8.47\%
+\end{aligned}
+\]
+
+It's interesting to note that this parameter-efficient approach modifies all the parameters in the 24 blocks yet trains fewer than half the parameters (8.41\%) compared to partial tuning, which only unfreezes 4 blocks (20.13\%).
+Moreover, LoRA prevents catastrophic forgetting: the original pre-trained weights are frozen, preserving their general knowledge and all new learning is isolated within the small, low-rank adapters, which prevents destructive updates to the core model. 
+% DORA
+%Trainable parameters: 29,352,981
+%Total parameters:     346,504,213
+%Percentage:           8.47%
+
+\subsection{Multi Task LoRA}
+For the multi-task PEFT setting, we also conduct an experiment using the Multi-Task LoRA (MTLoRA) framework \cite{mtlora}. This approach is specifically designed for multi-task learning and introduces a combination of Task-Agnostic and Task-Specific modules.
+This structure is intended to disentangle the parameter space, allowing the model to simultaneously learn shared features while also specializing in individual task requirements. The original MTLoRA paper, which focuses on dense prediction and uses hierarchical-transformer  as a backbone, inserts task-specifics adapters at multiple stages to capture multi-scale features. However, given that our three tasks are classification-based and we use a standard ViT implementation, we hypothesize that task differentiation is most crucial at the final representation layer rather than at intermediate feature maps.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{images/TSLora.pdf}
+	\caption{Task specific adapters, in our implementation we do not include the shared matrices, as they are used when a TS-LORA module is followed by a TA-LORA module}
+	\label{fig:single}
+\end{figure}
+
+Therefore, we implement a simplified version of this framework. We define Task-Agnostic (TA-LoRA) adapters as a single set of DoRA weights\footnote{Different from the original implementation that used standard LoRA} (rank 64) that are shared by all tasks. Conversely, Task-Specific (TS-LoRA) adapters are unique modules, where a separate set of LoRA weights (without magnitude decomposition) is trained for each individual task. We apply standard TA-LoRA adapters to the first 23 transformer blocks, using the same configuration described previously. Then, we apply TS-LoRA modules only to the linear layers (Q, K, V, O, and FFN) within the final (24th) transformer block. Crucially, the attention pooling layer is also replaced with a MTLoRA equivalent: the modified pooling block uses unique, trainable probes for each task and applies TS-LoRA adapters to all its internal linear layers. This allows the model to take the final shared features from the backbone and perform a specialized, task-specific pooling to generate the final representation for each classification head, while keeping a limited number of trainable parameters.
+
+Notably this MTLoRA approach is the only one that adds adapters that cannot completely be merged into the backbone, and so that marginally affect the memory-footprint and latency of the model during inference.
+
+\[
+\begin{aligned}
+	\text{Starting LR } (\eta_A): \quad & 1\text{e}-5 \\	
+	\text{LoRA+ Ratio } (\lambda): \quad & 6 \\
+	\text{Trainable parameters:} \quad & 36,730,901 \\
+	\text{Total parameters:} \quad & 354,093,077 \\
+	\text{Percentage of trainable:} \quad & 10.38\%
+\end{aligned}
+\]
+
+
+
+\section{Multi-task Learning}
+In the multi-task learning, our goal is to train the model such that its capable of classifying the three tasks in a single forward-pass. To achieve this, we have to adapt our architecture, by adding a classification head per task, and conjointly train them with the backbone. Moreover, 
+Multi-task learning present a list of challenges that have to be tackled:
+\begin{itemize}
+	\item \textbf{Missing labels}, no sample in our combined dataset presents labels for the three tasks.
+	\item \textbf{Task unbalance}, as it can be seen in table \ref{tab:tasks}, the samples labelled with emotion are heavily underrepresented in our combined dataset, being only 5.47\%. Without addressing this issue, the training for the emotion task would be heavily hindered in favor of the age and gender task.
+	\item \textbf{Multi task loss}, we need to define a new loss functions that combines the three single-task loss functions.
+\end{itemize}
+In the following subsections we describe the proposed solution for the listed problems.
+\subsection{Handling missing labels with masked labeling}
+To address the issue of missing labels, the masked labeling technique is employed during the computation of the loss for the age and emotion tasks. In this approach, when a label for a specific task is absent for a given sample $x_i$, its corresponding label $y_i$ is assigned a predefined \texttt{ignore\_idx} value. Then inside a batch the loss is computed as such:
+
+$$ 
+L_t = \frac{1}{\sum_{i=1}^{N} 1(y_i \neq \text{ignore\_idx})}  
+\sum_{i=1}^{N} 1(y_i \neq \text{ignore\_idx}) \cdot \ell(f_t(x_i), y_i) 
+$$
+
+Where $N$ is the number of samples in the batch, $\ell$ is the cross entropy loss function and $f(x_i)$ is the output of the network for the task. 
+
+\subsection{Handling task unbalance by batch balancing}
+If we sampled our dataset as is, the composition of a batch of samples would only have around 5\% of images labelled with emotion. This low value would lead to highly noisy gradients for the training of the emotion task. Especially disruptive would be the batches without even a single label for the emotion task, as it would be equivalent to a loss of zero for the batch that would be highly misleading. To counter-act this, we replicate emotion sample until they become a third of the dataset, so that a batch has on average 33\% of samples labelled with emotion, that in combination with the batch size of 128 addresses the noisy gradient problem. 
+
+\subsection{Multi-task loss}\label{ch:mloss}
+As our problem consists of three classification tasks, each with a unique number of labels (two for the gender task, seven for the emotion task, and nine for the age task), this leads to task losses with different scales. A simple summation of the three task may lead the task with higher loss to dominate the training loss at the expense of the other tasks. For this reason, we will explore two methods to balance the losses: exponential moving average (EMA) loss weighting and uncertainty weighting (UW). We will test both methods.
+\subsubsection{Exponential moving average}
+We use exponential moving average (EMA) loss weighting \cite{ema}, with the goal to have each loss on the scale of one. 
+Given the weighted multi-task loss:
+$$
+\mathcal{L}_{mtl} = \lambda_a * L_a + \lambda_g * L_g + \lambda_e * L_e
+$$ 
+
+Where $L_a$ correspond to the loss for the age task and $\lambda_a$ to its corresponding weight, and same nomenclature for the gender and emotion task, we compute the generic $\lambda_k$ weight for task k as such:
+
+$$
+\tilde{L}_k(t) = \beta L_k(t) + (1 - \beta)\tilde{L}_k(t - 1)
+$$
+$$
+\lambda_k(t) = \frac{1}{\tilde{L}_k(t)}
+$$
+
+Where $L_k(t)$ represent the loss at training iteration $t$ for task $k$ at (this meaning the loss computed batch per batch) and $\tilde{L}_k(t)$ represent the exponential moving average of that loss. The hyperparameter $\beta$ controls the decay rate of the moving average, and for our experiment we set it to 0.95 to ensure a stable calculation of the EMA losses. In fact, we update the $\lambda$ weight at the start of each epoch so that the loss weights remain constant for an entire pass over the training data: the final value of the EMA at the end of epoch E-1 is used to calculate the fixed weights $\lambda_a$, $\lambda_g$, and $\lambda_e$ that will be applied throughout all of epoch E.
+
+\subsubsection{Uncertainty Weighting}
+With Uncertainty Weighting (UW) we let the model learn how to balance the different task losses by itself \cite{uw}. The main idea of this method is to model the homoscedastic\footnote{This is a type of uncertainty that is task-dependent, not input-dependent, and captures the inherent noise level of a task. It can be seen as a measure of the irreducible error that afflicts a classification task.} uncertainty of each task. For classification, this is achieved by changing how we model the output of our classifier, from:
+$$Softmax(f^{\theta}(x))$$
+to:
+$$Softmax(\frac{1}{\sigma^{2}}f^{\theta}(x))$$
+Here, $\sigma^{2}$, is a measure of the task uncertainty. A more uncertain task, will have it's output distribution been made more uniform (squashed), to match the high variance of the task.
+By deriving the multi-task loss function following this approach, we arrive at an objective that learns these uncertainty weights automatically. For our three classification tasks (age, gender, and emotion), the final multi-task loss to be minimized is the following: 
+$$
+\mathcal{L}_{mtl}(W, \sigma_a, \sigma_g, \sigma_e) = \frac{1}{\sigma_{a}^{2}}\mathcal{L}_{a}(W) + \frac{1}{\sigma_{g}^{2}}\mathcal{L}_{g}(W) + \frac{1}{\sigma_{e}^{2}}\mathcal{L}_{e}(W) + \log \sigma_a + \log \sigma_g + \log \sigma_e
+$$
+Where $\mathcal{L}_{a}(W)$, $\mathcal{L}_{g}(W)$, $\mathcal{L}_{e}(W)$ are the standard cross-entropy loss defined for each tasks and $\sigma_a$, $\sigma_g$, $\sigma_e$ are learnable positive scalar parameters representing the uncertainty for each task. Notably, the $\log\sigma_k$ terms act as regularizers, penalizing the model if the uncertainties measure grows too large (without them the model would just put the variances to the highest value possible to minimize the loss).
+
+
+In practice, given that variances have to be non-negative and we have to avoid division by zero and numerical instability, it's more convenient to learn the logarithm of the variance $s_k := \log(\sigma_k^2)$, transforming the loss function during implementation to:
+$$
+\mathcal{L}_{mtl}(W, s_a, s_g, s_e) = e^{-s_a}\mathcal{L}_{a}(W) + e^{-s_g}\mathcal{L}_{g}(W) + e^{-s_e}\mathcal{L}_{e}(W) + \frac{1}{2}s_a + \frac{1}{2}s_g + \frac{1}{2}s_e
+$$
+
+With this adaptive weighting approach, we expect the age classification task to be assigned a lower weight. The reason is that age prediction contains more inherent noise compared to gender or emotion recognition: whereas gender and emotion can be directly determined from facial features, age is influenced by external variables such as lifestyle and genetics that aren't apparent in images. Additionally, the distinctions between adjacent age ranges (for example, '20-29' versus '30-39') are naturally vague. As a result, the age loss will automatically receive a reduced weight in the overall objective function. Nevertheless, this reduction may not substantially decrease the task's impact on training, since age classification involves 9 classes, its cross-entropy loss will inherently be larger in magnitude than the 2-class gender task or 7-class emotion task.
+
+\chapter{Experimental Result}
+This chapter presents the results obtained using the methodologies described in Chapter 3. As a point of clarification, any reference here to a DoRA specifically denotes the 'DoRA plus LoRA+' combination (as detailed in Section \ref{ch:peft}).
+Furthermore, we define "average accuracy" as the mean of the accuracy scores achieved on each separate dataset. This is distinct from, and should not be confused with, calculating a single accuracy score from a test set where all datasets are combined. Moreover, the calculation of the avarage accuracy excludes the value obtained on the VggFace2 datasets for the age task, as they are synthetically obtained.
+Finally, when analyzing these results, we must also consider that our prediction pipeline includes a face recognition DNN, which introduces an additional potential source of error.
+\section{Metrics}
+To evaluate the performances of the various experimented we will evaluate the following metrics:
+\begin{itemize}
+	\item \textbf{Accuracy}: The standard measure of correct predictions over the total number of samples for a given task $k$.
+	\[
+	\text{Accuracy}_k = \frac{\text{Number of correct prediction for task }k}{\text{Total number of samples for task }k}
+	\]
+	
+	\item \textbf{Balanced Accuracy}: This is the average of recall (sensitivity) obtained on each class. It is a more robust metric than standard accuracy, as it gives a fair score by preventing the majority classes from skewing the results, which is crucial for our imbalanced age and emotion tasks. For a task $k$ with $C_k$ classes. For a task $k$ with $C_k$ classes, it is defined as:
+	\[
+	\text{Balanced Accuracy}_k = \frac{1}{C_k} \sum_{i=1}^{C_k} \text{Recall}_i = \frac{1}{C_k} \sum_{i=1}^{C_k} \frac{\text{TP}_i}{\text{TP}_i + \text{FN}_i}
+	\]
+	where $\text{TP}_i$ and $\text{FN}_i$ are the number of true positives and false negatives for class $i$, respectively.
+
+	
+	\item \textbf{Number of parameters}: This metric quantifies the model's memory footprint. We have already reported in chapter 3 the number of parameter instantiated during training, in this chapter, the number will refer to the parameter required for inference.
+	
+	\item \textbf{GFLOPs}: (Giga Floating Point Operations) This measures the computational complexity of a single forward pass. It serves as a hardware-agnostic indicator of \textbf{inference latency}. A lower GFLOPs count suggests a faster model, which is crucial for deployment. This will be calculated for a single 336x336 image input.
+	
+
+\end{itemize}
+	
+From the checkpoints saved during training, we select the one that achieved the highest validation accuracy for the single-task model, and the one with the highest average mean accuracy for the multi-task model, to be used for testing.
+\section{Baseline}
+\label{ch:baseline}
+To contextualize the contribution of the methodologies applied, we use as our baseline the pre-trained PE-Core-L model in a zero-shot scenario. The baseline is built by manually designing task-specific text prompts for each class using the following standard templates for each task:
+\begin{itemize}
+	\item \textbf{Age groups}: \textit{"A photo of a person between $\langle$age range$\rangle$ years old"}
+	\item \textbf{Gender}: \textit{"A photo of a $\langle$gender$\rangle$ person"}
+	\item \textbf{Emotion}: \textit{"A photo of a/an $\langle$emotion$\rangle$ person"}
+\end{itemize}
+
+The prediction for each task is computed using the standard zero-shot classification method, that has already been briefly described in the literature review in the chapter on VLMs \ref{ch:vlms}. First, the image is passed through the visual encoder to get an image embedding. Concurrently, all text prompts for a task (e.g., "A photo of a male person", "A photo of a female person") are passed through the text encoder to get a set of text embeddings. The cosine similarity between the image embedding and each text embedding is calculated, and the class corresponding to the text prompt with the highest similarity score is selected as the prediction.
+
+This baseline serves as the reference point against all adaptation methods explored in this thesis and allows us to quantify the performance gain achieved by fine-tuning the model for these specific facial analysis tasks.
+
+
+\input{tables/baseline.tex}
+
+From Table \ref{tab:baseline_zero_acc}, which reports the zero-shot accuracy, we can see how the baseline achieves competitive performances on gender classification tasks, with accuracy values ranging from 95.78\% to 97.60\%, while for age group classification the accuracy values go from 42.01\% to 48.72\%, reflecting the increased complexity of age estimation. Finally, for emotion recognition the baseline achieves an accuracy value of 66.57\%. However, it is important to note that even these modest out-of-the-box scores for age and emotion are still significantly better than random guessing (which would be $\approx 11.1\%$ for age group classification and $\approx 14.2\%$ for FeR), indicating that we start from a solid baseline.
+
+In terms of computational efficiency, the baseline uses the standard classification pipeline used by CLIP's models; it requires both the textual encoder to process the hard prompts and the visual encoder to process the image.
+
+\section{Single-task results}
+As we discussed in the chapters on methodology, each experiment will be tried in both a single-task setting and in a multi-task settings. In this section we report the result obtained for the single-task approach.
+
+\input{tables/single_task.tex}
+\subsection{Gender Classification}
+Our single-task gender classification models show an improvement compared to the zero-shot baseline, in fact each model outperform this method by around ~0.9\%. 
+Linear probing, the approach that modifies less parameters achieves an avarage value across datasets of 97.54\%. In comparison, the deeper models outperform it of only 0.01, for attention probing, 0.03 for partial fine-tune and of 0.02 for DoRA, all the while trading top-spot by small margin on perfomance on single benchmark (each of the deeper model achieves best perfomance on one the test-sets). From the fact that there is a really small fork of perfomance, of just 0.03\%, we can safely assume that the gender task, in a single-task classification environment, does not benefit from deeper fine-tuning, and we can consider the improvement from linear-probing to partial fine-tuning non significant, as the model saturates its performance capabilities on this specific task with its MLP classification head.
+
+This plateau suggests that the features required for accurate gender classification are already robustly encoded in the pre-trained model's representations, as it's likely that during the robust image pre-training, it has seen many image-text pair that contained strong and frequent correlations between visual depictions of people and gendered terms (man, woman, girl, boy...) in the accompanying text.
+
+Given these results, linear probing presents the optimal trade-off between performance and efficiency. The marginal, and likely statistically insignificant, gains from deeper methods (like partial fine-tuning or DoRA) do not justify the substantial increase in training time and in the number of modified parameters. We conclude that for this single-task problem, the knowledge is already well-contained within the frozen backbone, and more complex adaptation strategies yield diminishing, negligible returns.
+\subsection{Emotion Classification}
+For the emotion task, all adaptation methods show a very large improvement over the zero-shot (ZS) baseline of 66.57\%. However, unlike the gender task, performance does not saturate with simple linear probing. Linear probing (LP) achieves 84.32\%, an important improvement of 17.75\% with attention probing (AP) offering a minor improvement at 84.91\%, that is in line with the benchmark results provided also in the perception encoder paper, where attention probing yield marginal improvement respect to the linear probing baseline.
+It is important to note that this 17.75\% gain, is not due to the added capacity of the MLP head: it is clear that the $~$1 million added parameters are not creating new visual understanding. Instead, the MLP head functions as an effective probe into the feature space of the frozen vision encoder.
+This 17.75\% gain is attributable to this head being explicitly trained to find and isolate the specific, pre-existing representations within the backbone that are relevant to the emotion task, as the pre-trained model has already learned a rich visual representation, that we cannot access it with simple zero-shot classification with hard-prompting. 
+Said this, the emotion task clearly benefits from deeper adaptation methods. There is a significant performance jump when moving from shallow probing (LP at 84.32\% and AP at 84.91\%) to methods that actually alter the backbone's representations, like FT$_4$ (88.78\%) and DoRA (90.83\%). This shows that the pre-trained features are not sufficient and can benefit from adaptation.
+However, the results show that performance does not scale with the raw number of modified parameters. While partial fine-tuning (FT$_4$) modifies a large portion of the model (~20.13\% of parameters), it is outperformed by DoRA, which modifies more than half the number of parameters (8.47\% of parameters).
+This is a key insight: DoRA provides a more efficient and effective adaptation than partial fine-tuning. It achieves the best result (90.83\%) by a clear margin, suggesting that refining the model's representations at all levels of the feature hierarchy, trough small, low-rank weights, is more effective than only re-training the final high-level representations (FT$_4$).
+Given the substantial 6.51\% performance gap between the simple linear probing and DoRA, deeper adaptation is clearly justified and we can conclude that DoRA is the superior method for this single-task problem, offering the best performance with the highest parameter efficiency.
+\subsection{Age Group Classification}
+For the age group task, all adaptation methods similarly show a massive improvement over the zero-shot (ZS) baseline average of 47.36\%. Linear probing (LP) achieves an average accuracy of 61.28\%, representing a 13.92\% gain over ZS, demonstrating that the MLP head is effectively probing relevant features. Attention probing (AP) provides only a marginal improvement, reaching 61.47\%.
+
+The age task shows a trend that is similar to the one shown by the emotion tasks. In fact, similar to emotion, this task clearly benefits from deeper adaptation methods. We see a consistent performance increase when moving from shallow probing to methods that alter the backbone: FT$_4$ achieves an average of 62.80\%, and DoRA achieves the best performance across all three individual datasets, culminating in the highest average of 63.72\%.
+While the 2.44\% average gain from LP to DoRA is not as big as the gain seen in the emotion task, it is still a significant and meaningful improvement, in contrast to the negligible gains observed in the saturated gender task. This smaller margin of improvement is likely also a reflection of the task's inherent difficulty, as classifying age groups is a more challenging problem than classifying emotion, and the model may be approaching the limits of achievable accuracy on these benchmarks, with the current setups.
+Despite this, the results show that the pre-trained features for age are good but not fully optimized, and that refining the backbone is necessary to achieve the best results. Once again, DoRA outperforms FT$_4$ (63.72\% vs. 62.80\%) while modifying fewer parameters, reinforcing the finding from the emotion task: a model-wide refinement of representations across all layers, using low-rank updates, is a more effective and efficient strategy than only retraining the final high-level layers (FT$_4$). Given these results, the additional complexity of deeper adaptation is justified, and we can conclude that DoRA is the superior method for this single-task problem.
+
+
+\section{Multi-task results}
+\subsection{Exponential moving average or uncertainty weighting}
+As explained in \ref{ch:mloss}, we presented two way of balancing the three task losses. To limit the number of experiments, we will test the two methods by training two model with partial fine-tuning and MTLoRA. 
+
+\begin{table}[htbp]
+	\centering
+	\caption{Model Accuracy (\%) on the Emotion Task}
+	\label{tab:uwema_comp}
+	
+	\begin{tabular}{l c c c c}
+		\toprule
+		Model & Emotion Acc & Avg. Age Acc & Avg. Gender Acc & Overall Avg \\
+		\midrule
+		FT$_4$ EMA & 86.47 & 62.96 & 97.44 & 82.29 \\
+		FT$_4$ UW & 88.43 & 63.00 & 97.41 & 82.94 \\
+		MTLoRA EMA & 88.98 & 63.29 & 97.51 & 83.26\\
+		MTLoRA UW & 90.06 & 64.03 & 97.51  & 83.86 \\
+		
+
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+From table \ref{tab:uwema_comp}, we can see that UW outperforms EMA, even if slightly. In fact, the two methods performed quite similarly, analyzing the training logs reveals that both method under weighted the loss of the age the task, and over weighted both the loss of the emotion and gender task. Both tried to strike a balance in this manner, as the training loss for the age task resulted in both context an order of magnitude greater than the other two. The key difference seems to have been that, EMA severely under weighted the age task loss, and slightly over weighted the other two, while UW slightly under weighted the age loss and greatly over weighted the other two. Going forward, the reported multi-task model will have been trained using UW.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{images/variance_plot.png}
+	\caption{Variances obtained by MTLoRA and DoRA, the model converge to similar weighting for the three task}
+	\label{fig:var}
+\end{figure}
+
+
+\subsubsection{Results}
+We also repeat the linear probing results in this section. The reason is that since all three probing heads use the same frozen backbone, they can easily be loaded together onto that single encoder. This allows for the assembly of a multi-task network, even though the probes were trained individually and not through multi-task learning.
+
+\input{tables/multitask_results.tex}
+
+
+\subsection{Gender Classification}
+In the multi-task setting, all adaptation methods again outperform the zero-shot (ZS) baseline of 96.67\%. However, the results reinforce the conclusion from the single-task analysis: the gender task is saturated and does not benefit from complex adaptation.
+
+The performance across all multi-task models is compressed with a total range of only 0.09\% (from 97.40\% for AP to 97.49\% for DoRA and MTLoRA). Deeper methods like FT$_4$ (97.41\%), DoRA (97.49\%), and MTLoRA (97.51\%) show no meaningful advantage over the shallow attention probing approach.
+
+Comparing these results to their single-task counterpart, we observe that multi-task learning provides no benefit in this case. For instance, single-task DoRA achieved 97.56\%, whereas multi-task DoRA scored 97.49\%. 
+In fact, the linear probing (LP) model (97.54\%), which simply probes the original, unadapted features, performs better than every single multi-task adapted model (AP, FT$_4$, DoRA, and MTLoRA). This suggests that the features from the frozen vision encoder, as already observed, are already highly discriminative for the gender task. Consequently, the multi-task optimization for the more complex emotion and age tasks introduces a minor negative transfer, slightly pulling the shared representation away from the optimal space for the simpler gender task.
+
+MTLoRA performs on par with the multi-task DoRA approach, with a marginal improvement of 0.02\%. The specialized method was not able prevent this marginal negative transfer that we have observed, performing still slightly worse than the single-task methods (still noting that we are talking about a really small difference).
+
+
+\subsection{Emotion Classification}
+For the emotion task in a multi-task environment, the shallowest adaptation method is Attention Probing (AP), which achieves 85.12\%. This is a massive improvement over the ZS baseline (66.57\%) and is also a notable step up from the LP approach that achieves 84.32\% as accuracy. As with the single-task case, this demonstrates that while probes can find relevant features, performance does not saturate with shallow methods.
+Moreover, it also shows that MTL does not hinder emotions, as it even perform better than its single-task equivalent, that achieves a score of 84.91\%
+
+A significant performance jump is seen with deeper adaptation: FT$_4$ reaches 88.43\%, and DoRA achieves 91.21\%. This confirms that adapting the backbone's representations is crucial for this task.
+
+The most important insight comes from comparing single-task and multi-task  results. The DoRA approach benefits from multi-task learning, improving from 90.83\%  to 91.21\% . This indicates positive knowledge transfer, where learning to classify age and gender simultaneously provides a regularizing effect that enhances the model's understanding of emotion.
+
+However, the specialized MTLoRA, which uses task-specific matrices on the final block, performs worse than standard DoRA (90.06\% vs. 91.21\%) and even worse than single-task DoRA (90.83\%). This suggests that for the emotion task, sharing the DoRA updates across all layers is more effective. The task-specific specialization in the final layer seems to hinder, rather than help, this particular task, as it annuls the positive knowledge transfer that we see with task agnostic approach.
+
+Therefore, for emotion classification, deeper adaptation is essential, as already shown for single-task, and  DoRA in a multi-task setting provides the optimal result, leveraging positive knowledge transfer.
+
+\subsection{Age Group Classification}
+For the age group task, all adaptation methods similarly show a massive improvement over the zero-shot (ZS) baseline average of 47.36\%. The shallowest multi-task method, Attention Probing, achieves 62.46\%. This is an interesting result: while in the single-task setting, AP (61.47\%) offered a negligible gain over Linear Probing (61.28\%), here in the multi-task setting, it shows a clear benefit. This positive knowledge transfer demonstrates that jointly training the shared attention pooling layer for all three tasks improves its ability to aggregate features.
+
+Similar to the emotion task, this task  benefits from deeper adaptation methods. We see a consistent performance increase when moving from AP (62.46\%) to methods that alter the vision encoder transformers blocks: FT$_4$ achieves 63.00\%, and DoRA achieves 63.53\%. This confirms that the pre-trained features are not fully optimized and that refining the backbone is necessary.
+
+A crucial insight appears when comparing standard DoRA across settings. We observe a minor case of negative transfer: single-task DoRA (63.72\%) actually outperforms the multi-task standard DoRA (63.53\%). This suggests that a fully shared adaptation forces a small representational compromise that hinders the age task.
+
+MTLoRA, in this situations, works as expected. By utilizing task-specific LoRA matrices in the final transformer block, MTLoRA achieves an average accuracy of 64.03\%. This is the highest performance for the age task across all models and both tables. It successfully overcomes the negative transfer seen in the standard DoRA model, demonstrating that the age task benefits from both shared representation learning in early layers and dedicated, specialized high-level representations.
+
+\subsection{Singe-Task vs. Multi-Task}
+The multi-task learning framework demonstrates considerable solidity and robustness across all adaptation methods, from the shallowest (AP) to the deepest (DoRA). A primary concern in multi-task learning is negative transfer, where joint optimization degrades performance on individual tasks. The results show that this framework successfully avoids this possible deficit of MTL, achieving a global performance on par with the collection of specialized single-task models that we trained.
+
+This robustness is immediately evident when comparing the 'Overall Average' performance of each multi-task model against its single-task counterpart:
+\begin{itemize}
+	\item Attention Probing (AP) sees a clear gain of +0.35\% (81.66\% vs 81.3\%).
+	\item Partial Fine-Tuning (FT$_4$) sees a negligible drop of just -0.11\% (82.94\% vs 83.05\%).
+	\item DoRA sees a negligible gain of +0.03\% (84.07\% vs 84.04\%).
+\end{itemize}
+
+A task-specific analysis of the top-performing DoRA framework confirms this balance. The standard MTL DoRA (84.07\%) and its single-task counterpart (84.04\%) achieved nearly identical accuracy. The MTL model yielded clear positive transfer for emotion classification ($+0.38\%$), offset by only minor, negligible degradation in age ($-0.19\%$) and gender ($-0.07\%$). This suggests the joint optimization provides a regularizing effect, as the shared DoRA adapter weights capture complementary information.
+
+This performance parity suggests that the multi-task DoRA framework largely avoids significant negative transfer. The negligible degradation in age and gender, combined with the clear positive transfer in the emotion task, indicates that the shared DoRA adapter weights capture complementary information. It appears the joint optimization provides a regularizing effect that benefits emotion recognition, while only minimally impacting the other tasks.
+
+This confirms the stability of the multi-task approach and the frameworks ability to maintain performance, regardless of the adaptation method.
+
+Finally, the MTLoRA experiment employed a more complex architecture designed to create task-specific representations. It achieved an overall average performance of 83.88\%, a strong result that surpassed shallower approaches like AP (81.66\%) and FT$_4$ (82.94\%). However, it fell slightly short of the standard multi-task DoRA model (84.07\%). This indicates that, from a global performance standpoint, the simpler, fully-shared parameterization of standard DoRA offered a marginally better overall balance than the specialized MTLoRA architecture, while also providing advantages in inference speed and memory efficiency.
+
+\section{Comparison to the state of the art}
+In this section, we report a comparison of our best-performing models against established state-of-the-art (SOTA) methods from the literature.
+It is crucial to contextualize this comparison, as a direct evaluation is complicated by key differences in methodology. Firstly, while we evaluate on the same standard datasets, the specific training and testing splits used in our work may not be identical to those employed by all published SOTA models (e.g. for UTKFace we utilize the entire dataset for testing, and not a split). Secondly, our entire pipeline includes a mandatory face cropping step prior to classification (as detailed in Section \ref{ch:dataset_review}), where the face is first detected and isolated from the image. This preprocessing step may differ from other SOTA methods that might operate on the full, uncropped image or use different alignment techniques.
+Despite these variations, the following comparison provides a valuable reference for positioning our results within the broader research landscape for facial attribute analysis.
+\input{tables/sota.tex}
+As we can see our models are competitive with SOTA solutions: in the age-task we achieve SOTA perfomances, for the FairFace dataset. For the FairFace dataset we also maintain a top-spot for the gender-recognition problem, while for UTKFace we under perform with our multi-task model, by 1.9\%. This discrepancy may be due to the fact that we are evaluating our performances on the entire dataset and not only the test-split. Moreover, we may also keep in considerations as a possible source of error our face recognition error, as we may have faulty detection, or detection that do not match with the associated label, in the case of pictures containing more than one individual. 
+
+The most significant performance gap is observed in the FeR task, where our model trails the top-performing ResEmoteNet by 3.55\%. As noted in the literature, ResEmoteNet is a convolutional based neural network trained from scratch specifically for FeR. CNNs possess inherent inductive biases, such as parameter sharing and local receptive fields, which make them highly effective for training from scratch on smaller datasets like RAF-DB (approx. 12k samples).
+
+In contrast, the gap is much smaller when compared to methods using pre-trained backbones, such as Poster++ (1\% gap) and ApViT (0.77\% gap). These two methods employ backbones pre-trained on specialized, face-centric datasets. Our model's perception encoder, however, was pre-trained on more generalist datasets and objectives. This difference in pre-training specialization likely accounts for the performance discrepancy.
+
+It is important to note, however, that when evaluating using balanced accuracy, our model's performance is on par with these competitors, as detailed in Section 4.7.
+
+ 
+\section{Efficiency comparison}
+\input{tables/eff_comparisons.tex}
+One of our primary goals was to develop a framework that is significantly more efficient, in terms of parameters and inference, than the zero-shot baseline approach. The results presented in Table \ref{tab:model_params_gflops_acc} confirm that we have successfully achieved this objective. As the table illustrates, all proposed approaches substantially outperform the zero-shot baseline in efficiency. By discarding the textual encoder, we cut the memory footprint and associated computational load by nearly half, reducing the GFLOPs from 699.76 to 352.18. This drastic reduction in resources does not come at the cost of performance. On the contrary, all our proposed adaptation strategies also greatly outperform the zero-shot baseline's accuracy. In our analysis of MTLoRA, we observed that a $2.8\%$ increase in parameters and a $4.49\%$ increase in GFLOPs (compared to the standard DoRA adaptation) did not yield a corresponding increase in average accuracy. Finally, we could have considered an alternative: loading three separate, task-specific DoRA adapters. This approach, in its simpler form, would involve sequentially switching between adapters and is computationally prohibitive (around 1400 GFLOPs and 400M parameters). Moreover, our work demonstrated that our single multi-task DoRA adapter achieves accuracy on par with this inefficient, multi-adapter method. Therefore, we did not explore advanced parallel serving methodologies that could bring up the computational efficiency of this method, as the ones that we have cited in the literature review (S-LoRA, B-LoRA).
+
+\section{Balanced Accuracy}\label{ch:ba}
+In the interest of fairness, in this chapter we will report the balanced accuracy obtained by our multi-task models in the age and emotion tasks, as they are the task with a strong class imbalance, we will also report the obtained confusion matrix to further examine the model predictive behavior.
+\subsection{Emotion Recognition confusion matrices}
+\begin{figure}[H]
+	\centering
+	\hfill
+	\begin{subfigure}[b]{0.32\textwidth}
+		\includegraphics[width=\textwidth]{images/mtlora_raf.png}
+		\caption{MTLoRA confusion matrix on RAF-DB, balanced accuracy of 86.17 (Acc. 90.06)}
+		\label{fig:mtloracmraf}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.32\textwidth}
+		\includegraphics[width=\textwidth]{images/cm_raf_lora.png} 
+		\caption{DoRA confusion matrix on RAF-DB, balanced accuracy of 85.90 (Acc. 91.21)}
+		\label{fig:loracmraf}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.34\textwidth}
+		\includegraphics[width=\textwidth]{images/apvitrafdb.PNG}
+		\caption{APViT confusion matrix on RAF-DB, balanced accuracy of 86.36 (Acc. 92.21)}
+		\label{fig:apvitcm}
+	\end{subfigure}
+	
+	
+	\begin{subfigure}[b]{0.34\textwidth}
+		\includegraphics[width=\textwidth]{images/cmposter++.PNG}
+		\caption{Poster++ confusion matrix on RAF-DB, balanced accuracy of 85.97 (Acc. 91.98)}
+		\label{fig:postercm}
+	\end{subfigure}
+	
+	\caption{Confusion matrices on the RAF-DB dataset, with APViT and Poster++ reported for comparison.}
+	\label{fig:rafcms}
+	
+\end{figure}
+
+Based on the confusion matrices  \ref{fig:rafcms}, our multi-task model's performance is highly comparable to that of APViT and Poster++, with a difference in balanced accuracy of less than 0.2 percentage points for our MTLoRA model and of 0.46 for the DoRA model compared to ApViT. The comparison with Poster++, is even more favorable, with the MTLoRA model surpassing it in this metric by 0.2\% and DoRA lagging behind by just 0.07\%.
+The matrices also show that the models perform similarly, struggling most with the "fear" class, which they often misclassify as "surprise." Both models also have difficulty identifying the "disgust" and "anger" classes. This behavior is likely due to the visual similarity between fear and surprise, and the fact that the anger and disgust classes have fewer samples compared to the others.
+\subsection{Age classification confusion matrices}
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[b]{0.48\textwidth}
+		\includegraphics[width=\textwidth]{images/ff_mtlora.png}
+		\caption{MTLoRA confusion matrix on FairFace, balanced accuracy of 62.78 (Acc. 64.11)}
+		\label{fig:first}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.48\textwidth}
+		\includegraphics[width=\textwidth]{images/utk_mtlora.png}
+		\caption{MTLoRA confusion matrix on UTKFace, balanced accuracy of 61.98 (Acc. 63.96)}
+		\label{fig:second}
+	\end{subfigure}
+	
+	\vspace{0.5em} % space between rows
+	
+	% --- Bottom row ---
+	\begin{subfigure}[b]{0.48\textwidth}
+		\includegraphics[width=\textwidth]{images/cm_age_ff_lora.png}
+		\caption{LoRA confusion matrix on FairFace, balanced accuracy of 64.26 (Acc. 63.73)}
+		\label{fig:third}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.48\textwidth}
+		\includegraphics[width=\textwidth]{images/cm_age_utk_lora.png}
+		\caption{LoRA confusion matrix on UTKFace, balanced accuracy of 61.91 (Acc. 63.34)}
+		\label{fig:fourth}
+	\end{subfigure}
+	
+	\caption{Comparison of age confusion matrices across FairFace and UTKFace.}
+	\label{fig:agecms_four}
+\end{figure}
+As we can observe from the matrices \ref{fig:agecms_four}, the models produced show variable performance that are strongly dependent on the age group. It is quite accurate at identifying young individuals, but its precision decreases when classifying adults, especially from middle age onward. This may be explained by the high intra-class variance within adult age groups and the low inter-class variance separating adjacent ones.
+
+An observation that can be made is that the model indirectly "understands" the ordinality of the task, in fact almost all significant errors are "off-by-one" misclassifications into an adjacent age bracket and there are virtually no "severe" errors (e.g., classifying "0-2" as "50-59"). This indicates the model is good at estimating age, but struggles with the precise boundaries of the 10-year bins.
+
+In conclusion, the analysis of the balanced accuracy evidences a particular trend, where a high standard accuracy does not necessarily translate to an equally high balanced accuracy, in fact, accounting for this metric results in a swap of the leading models, identifying MTLoRA as the top performer for FeR and the LoRA model as the best for age classification.
+
+\subsubsection{C-Index}
+\begin{table}[ht]
+	\centering
+	\begin{tabular}{lrrr}
+		\toprule
+		Task & LP vs. ZS & LoRA vs. ZS & LP vs. LoRA \\
+		\midrule
+		FairFace Age & 56.13\% & 53.45\% & 81.89\% \\
+		FairFace Gender & 98.69\% & 98.30\% & 98.79\% \\
+		RAF-DB Emotion & 69.29\% & 66.75\% & 85.22\% \\
+		\bottomrule
+	\end{tabular}
+	\caption{Concordance of prediction between zero-shot baseline, linear probe and LoRA.}
+	\label{tab:my-results}
+\end{table}
+This table presents the Concordance Index (C-Index), which measures the percentage of agreement between the predictions of three of the model produced, and is calculate as such:  
+$$C = \frac{\text{Number of equal predictions}}{\text{Total number of samples}} \times 100\%$$
+We can see as for the gender task, there is almost no real "disagreement" as expected, as the perfomance of the baseline was already quite strong. For age and emotion instead, we can see how there is a low-agreement between the baseline and the trained model. Crucially, LP and LoRA show an high agreement with each other, indicating similar predictive patterns. 
+
+\subsubsection{DoRA and LoRA, small ablation experiment}
+The DoRA method has been introduced by its author as a way to more closely match the training pattern of full-fine tune for the LoRA adaptation method. As we have noted that a full-fine tune is not necessarily something we desire, it's fair to doubt the effectiveness of DoRA in our setting where full-fine tune may lead to overfitting. This is also an observation done by the authors of the DoRA paper, and they examine in section 5.3 \cite{Dora} a similar situation, where they have a FT model that performs worse than it's LoRA adaptation. In their setting DoRA still outperformed LoRA, by a smaller margin.
+To see if we are in the same case, we ran an ablations, by training a MTL LoRA model, without the DoRA enhancements (but still using the LoRA+ learning rate scheme), using the same hyperparameters detailed in the methodology section.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{lrrr}
+		\toprule
+		Model & Avg Age Acc. & Avg Gender Acc. & Emotion Acc. \\
+		\midrule
+		LoRA & 63.45\% & 97.52\% & 90.44\% \\
+		DoRA & 63.53\% & 97.49\% & 91.21\% \\
+		\bottomrule
+	\end{tabular}
+	\caption{LoRA and DoRA comparison.}
+	\label{tab:lora_dora}
+\end{table}
+
+The results of this ablation (Table \ref{tab:lora_dora}) in our multi-task learning setting are consistent with the findings reported by the DoRA authors.
+
+The primary takeaway is that DoRA provides a clear and significant performance boost on the Emotion task, outperforming the standard LoRA by +0.77\% (91.21\% vs. 90.44\%). This is the most impactful result and suggests that for complex, nuanced tasks that require substantial adaptation, DoRA's method of separating magnitude and direction provides a more effective update than LoRA alone.
+This trend is mirrored, though to a much smaller degree, on the Age task, which also benefits from deeper adaptation. Here, DoRA provides a marginal +0.08\% improvement.
+Conversely, on the gender task, which we previously established as being "saturated" and not benefiting from deeper adaptation, the methods are statistically identical. The negligible -0.03\% difference confirms that this simple task is insensitive to the nuances between these two advanced adaptation methods.
+
+\section{T-SNE and PCA visualizations}
+In this section, we present visualizations of the RAF-DB and UTKFace datasets using principal component analysis (PCA) and t-distributed stochastic neighbor embedding (t-SNE), applied to the 50 principal components obtained from PCA. We present the out-of-the box PE-Core-L visualization, the DoRA MTL model visualizations and the MTLoRA visualization. For this last one, we can observe the main effect of this methodology: producing a task-specific feature map per task. 
+%\begin{center}
+%	\small % You can change this text size
+%	\legenditem{red}{Male} \hspace{1.5em}
+%	\legenditem{lightblue}{Female}
+%\end{center}
+
+%\begin{center}
+%	\small % You can change this text size
+%	\legenditem{pink}{Neutral} \hspace{1.5em}
+%	\legenditem{angrypurple}{Angry} \hspace{1.5em}
+%	\legenditem{blue}{Sad} \hspace{1.5em}
+%	\legenditem{aquamarine}{Happy} \\[\dimexpr\dp\strutbox+0.2ex\relax] % Line break with a little extra space
+%	\legenditem{lime}{Disgust} \hspace{1.5em}
+%	\legenditem{yellow}{Fear} \hspace{1.5em}
+%	\legenditem{red}{Surprise}
+%\end{center}
+
+
+%PCA Explained Variance: UTX EXPLAINED UNTRAINED
+% Principal Component 1: 0.0988 (9.88%)
+% Principal Component 2: 0.0692 (6.92%)
+% Total Variance Explained: 0.1680 (16.80%)
+
+
+
+
+%PCA Explained Variance: UTK EXPLAINED TRAINED
+%- Principal Component 1: 0.1262 (12.62%)
+%- Principal Component 2: 0.0772 (7.72%)
+%- Total Variance Explained: 0.2034 (20.34%)
+\input{images/legend.tex}
+\begin{figure}[htb]
+	\centering
+	
+	% --- Row 1: Emotion t-SNE ---
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=\linewidth]{images/vis_raf/tsne_features_emotion_untrained.png}
+		\caption{t-SNE Emotion (Untrained)}
+		\label{fig:tsne_emotion_untrained}
+	\end{subfigure}
+	\hfill 
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=\linewidth]{images/vis_raf/tsne_features_emotion_trained.png}
+		\caption{t-SNE Emotion (Trained)}
+		\label{fig:tsne_emotion_trained}
+	\end{subfigure}
+	
+
+	
+	\vspace{0.3cm} % Replaces the original 0.5cm space
+	
+		% --- Row 3: Gender t-SNE ---
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=\linewidth]{images/vis_raf/tsne_features_gender_untrained.png}
+		\caption{t-SNE Gender (Untrained)}
+		\label{fig:tsne_gender_untrained}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=\linewidth]{images/vis_raf/tsne_features_gender_trained.png}
+		\caption{t-SNE Gender (Trained)}
+		\label{fig:tsne_gender_trained}
+	\end{subfigure}
+	\vspace{0.3cm}
+	
+	
+	% --- Row 2: Emotion Plots ---
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=\linewidth]{images/vis_raf/untrained_16.5.png}
+		\caption{PCA Emotion (Untrained)}
+		\label{fig:emotion1_untrained}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=\linewidth]{images/vis_raf/trained_211_emotion.png}
+		\caption{PCA Emotion (Trained)}
+		\label{fig:emotion1_trained}
+	\end{subfigure}
+	
+	\vspace{0.5cm}
+
+	
+	% --- Row 4: Gender Plots ---
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=\linewidth]{images/vis_raf/untrained_gender_165.png}
+		\caption{PCA Gender  (Untrained)}
+		\label{fig:gender1_untrained}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=\linewidth]{images/vis_raf/trained_211_gender.png}
+		\caption{PCA Gender  (Trained)}
+		\label{fig:gender1_trained}
+	\end{subfigure}
+	
+	\caption{Comparison of untrained and trained model features on RAF-DB, for the DoRA MTL model.}
+	\label{fig:main_comparison}
+\end{figure}
+
+\begin{figure}[htb]
+	\centering
+	
+	% --- Row 1: Emotion t-SNE ---
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=\linewidth]{images/vis_utk/tsne_Age_untrained.png}
+		\caption{t-SNE Age (Untrained)}
+		\label{fig:tsne_emotion_untrained_utk}
+	\end{subfigure}
+	\hfill 
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=\linewidth]{images/vis_utk/tsne_Age_trained.png}
+		\caption{t-SNE Age (Trained)}
+		\label{fig:tsne_emotion_trained_utk}
+	\end{subfigure}
+	
+	
+	
+	\vspace{0.3cm} % Replaces the original 0.5cm space
+	
+	% --- Row 3: Gender t-SNE ---
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=\linewidth]{images/vis_utk/tsne_Gender_untrained.png}
+		\caption{t-SNE Gender (Untrained)}
+		\label{fig:tsne_gender_untrained_utk}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=\linewidth]{images/vis_utk/tsne_Gender_trained.png}
+		\caption{t-SNE Gender (Trained)}
+		\label{fig:tsne_gender_trained_utk}
+	\end{subfigure}
+	\vspace{0.3cm}
+	
+	
+	% --- Row 2: Emotion Plots ---
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=\linewidth]{images/vis_utk/pca_Age_untrained_utk.png}
+		\caption{PCA Age (Untrained)}
+		\label{fig:emotion1_untrained_utk}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.48\textwidth}		\includegraphics[width=\linewidth]{images/vis_utk/pca_Age_trained_utk.png}
+		\caption{PCA Age (Trained)}
+		\label{fig:emotion1_trained_utk}
+	\end{subfigure}
+	
+
+	
+	\vspace{0.3cm} % Replaces the original 0.5cm space
+	
+	% --- Row 4: Gender Plots ---
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=\linewidth]{images/vis_utk/pca_Gender_untrained_utk.png}
+		\caption{PCA Gender  (Untrained)}
+		\label{fig:gender1_untrained_utk}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=\linewidth]{images/vis_utk/pca_Gender_trained_utk.png}
+		\caption{PCA Gender  (Trained)}
+		\label{fig:gender1_trained_utk}
+	\end{subfigure}
+	
+	\caption{Comparison of untrained and trained model features on UTKFace, for the DoRA MTL model.}
+	\label{fig:main_comparison_utk}
+\end{figure}
+
+
+\begin{figure}[htb]
+	\centering
+	
+	% --- Row 1: Emotion t-SNE ---
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=\linewidth]{images/mtlora/pca_Emotion_trained_RAF-DB_mtlora.png}
+		\caption{PCA Emotion}
+		\label{fig:}
+	\end{subfigure}
+	\hfill 
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=\linewidth]{images/mtlora/tsne_Emotion_trained_mtlora.png}
+		\caption{t-SNE Emotion}
+
+	\end{subfigure}
+	
+	
+	
+	\vspace{0.3cm} % Replaces the original 0.5cm space
+	
+	% --- Row 3: Gender t-SNE ---
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=\linewidth]{images/mtlora/pca_Gender_trained_RAF-DB_mtlora.png}
+		\caption{PCA Gender}
+
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=\linewidth]{images/mtlora/tsne_Gender_trained__raf_mtlora.png}
+		\caption{t-SNE Gender}
+
+	\end{subfigure}
+	\vspace{0.3cm}
+	
+	
+	% --- Row 2: Emotion Plots ---
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=\linewidth]{images/mtlora/pca_Gender_trained_UTK_mtlora.png}
+		\caption{PCA Gender}
+
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.48\textwidth}		\includegraphics[width=\linewidth]{images/mtlora/tsne_Gender_trained_mtlora.png}
+		\caption{t-SNE Gender}
+
+	\end{subfigure}
+	
+	
+	
+	\vspace{0.3cm} % Replaces the original 0.5cm space
+	
+	% --- Row 4: Gender Plots ---
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=\linewidth]{images/mtlora/pca_Age_trained_UTK_mtlora.png}
+		\caption{PCA Age}
+
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=\linewidth]{images/mtlora/tsne_Age_trained_mtlora.png}
+		\caption{t-SNE Age}
+
+	\end{subfigure}
+	
+	\caption{Visualization of MTLoRA features. We can appreciate how each task has its own representation}
+
+\end{figure}
+
+\chapter{Conclusion}
+\section{Analysis of findings}
+\begin{figure}[H]
+	
+	\centering
+	
+	\makebox[\linewidth][c]{%
+		
+		\includegraphics[width=0.5\linewidth]{images/example2.png}%
+		
+		\includegraphics[width=0.5\linewidth]{images/example1.png}%
+		
+	}
+	
+	\caption{Example of MTLoRA predictions}
+	
+	\label{fig:touching_force}
+	
+\end{figure}
+The experimental results presented in Chapter 4 confirm the central hypothesis of this thesis: a large-scale, pre-trained VLM vision encoder can serve as an exceptionally effective foundation for the specialized domain of multi-task facial attribute classification.
+A primary finding is the inadequacy of the zero-shot (ZS) baseline: while the ZS model, which requires both the visual and text encoders, showed modest capability (69.61\% overall average), every adaptation method significantly outperformed it. More importantly, by adapting only the vision encoder, we developed models that are far more efficient. All proposed solutions discard the text encoder, effectively halving the computational load from 699.76 GFLOPs to $\approx$350 GFLOPs, while simultaneously achieving substantial accuracy gains.
+Among the adaptation strategies, the Parameter-Efficient Fine-Tuning approach using LoRA (with DoRA and LoRA+) emerged as the optimal solution: in the single-task setting, LoRA achieved the highest accuracy on the two most complex tasks, Age and Emotion, notably, it outperformed partial fine-tuning (FT$_4$) while training less than half the number of parameters (8.47\% vs. 20.13\%),  demonstrating that a parameter-efficient approach can be a more effective strategy, that mitigates overfitting and better preserves the generalized knowledge of the pre-trained backbone for modest-size datasets.
+
+The multi-task learning (MTL) experiments revealed a trade-off: conjoint training consistently benefited the most complex task, Age, which saw a performance increase across all MTL models, suggesting the models successfully leveraged shared representations from the Gender and Emotion tasks to improve its understanding of age-related features, showing an example of positive-transfer. However, this came at the cost of a slight performance dip in the Emotion and Gender tasks, indicating a degree of negative transfer for FT$_4$ and MTLoRA. The standard LoRA  model instead provided the best overall compromise, achieving the highest overall average accuracy (84.07\%). The more complex MTLoRA, designed to explicitly mitigate this negative transfer, did not yield a superior overall result, suggesting that a single, well-tuned set of LoRA adapters was more effective.
+In conclusion, this work developed an efficient, multi-task facial attribute classifier by adapting the PE-Core-L vision encoder. The LoRA  methodology proved to be the superior adaptation strategy, creating a final model that is computationally efficient (352 GFLOPs) compered to our baseline, parameter-efficient (8.47\% trainable parameters), and accurate, achieving SOTA-competitive performance on complex emotion and age classification tasks.
+
+
+
+\section{Future works}
+This thesis demonstrated the effectiveness of adapting a pre-trained VLM vision encoder for multi-task facial attribute classification. The results, particularly with LoRA, are competitive and highly efficient and opens several promising avenues for future investigation:
+\begin{itemize}
+	\item \textbf{Compare Vision Encoders:} Evaluate other models from the PE family (e.g., PE-Spatial) and encoders with different pre-training, such as the self-supervised DINOv3.
+	
+	\item \textbf{Evaluate Model Scaling:} Test smaller PE variants (Base, Small and Tiny) to obtain "mobile" version of our models, and be able to compare LoRA's efficiency against a feasible full fine-tuning on these models.
+	
+	\item \textbf{Reformulate Age Task:} Explore a fine-grained ordinal regression alternative to coarse age group classification, treating each individual year (1, 2, 3... 100+) as a distinct rank and optimizing with a loss like CORAL.
+	
+	\item \textbf{Advance Loss Balancing:} Explore more multi-task loss balancing methodologies, such as Dynamic Weight Averaging (DWA) or GradNorm.
+	
+	\item \textbf{Dynamic Adapter Serving:} Investigate efficient deployment strategies like S-LoRA to serve the best-performing single-task adapters on a shared backbone, analyzing the GFLOPs and accuracy trade-off.
+	
+	\item \textbf{Explore multi-scale MTLoRA:} Implement a similar approach as presented in the MTLoRA paper, were TS-LoRA are added at various scale and the feature-map at different scale are then fused to produce a task-specific embedding. Moreover explore the possibility of defining the TS-LoRA as TS-DoRA.
+	
+
+\end{itemize}
+\newpage
+\listoftables
+\newpage
 \listoffigures
+\newpage
 \printbibliography
+
+\newpage
+\subsection*{\textit{Ringraziamenti}}
+Desidero esprimere i miei più profondi e sinceri ringraziamenti, innanzitutto, alla mia famiglia, per il loro sostegno che non è mai mancato in questi anni.
+
+Vorrei ringraziare i miei relatori, il \textit{Prof. Mario Vento} e il \textit{Prof. Antonio Greco}, che sono sempre stati disponibili e cordiali, sia durante le lezioni che durante l'elaborazione di questa tesi.
+
+In conclusione, desidero esprimere la mia sincera gratitudine a tutte le persone che hanno contribuito al raggiungimento di questo obiettivo.
 \end{document}

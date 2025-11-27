@@ -1,6 +1,28 @@
-\contentsline {figure}{\numberline {1}{\ignorespaces FairFace Dataset Distribution}}{3}{figure.caption.2}%
-\contentsline {figure}{\numberline {2}{\ignorespaces UTKFace Dataset Distribution (Test Set)}}{4}{figure.caption.3}%
-\contentsline {figure}{\numberline {3}{\ignorespaces UTKFace Dataset Distribution (Test Set)}}{4}{figure.caption.4}%
-\contentsline {figure}{\numberline {4}{\ignorespaces RAF-DB Dataset Distribution}}{5}{figure.caption.5}%
-\contentsline {figure}{\numberline {5}{\ignorespaces UTKFace Dataset Distribution (Test Set)}}{6}{figure.caption.6}%
-\contentsline {figure}{\numberline {6}{\ignorespaces FairFace Dataset Distribution}}{6}{figure.caption.7}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Two example image-text pairs that may be used to train a VLM, obtained from University Of Salerno Wikipedia page}}{9}{figure.caption.3}%
+\contentsline {figure}{\numberline {2.2}{\ignorespaces The perception encoder family of models}}{11}{figure.caption.4}%
+\contentsline {figure}{\numberline {2.3}{\ignorespaces ResEmoteNet architecture}}{13}{figure.2.3}%
+\contentsline {figure}{\numberline {2.4}{\ignorespaces APViT approach, discarding less informative areas}}{14}{figure.2.4}%
+\contentsline {figure}{\numberline {2.5}{\ignorespaces POSTER++ dual-backbone architecture}}{14}{figure.2.5}%
+\contentsline {figure}{\numberline {2.6}{\ignorespaces MiVolo dual-input approach}}{15}{figure.2.6}%
+\contentsline {figure}{\numberline {2.7}{\ignorespaces CORAL ordinal ranking formulation, with consistency constraint}}{16}{figure.2.7}%
+\contentsline {figure}{\numberline {2.8}{\ignorespaces FairFace Dataset Distribution}}{18}{figure.caption.7}%
+\contentsline {figure}{\numberline {2.9}{\ignorespaces UTKFace Dataset Distribution (Test Set)}}{19}{figure.caption.8}%
+\contentsline {figure}{\numberline {2.10}{\ignorespaces Lagenda Dataset Distribution}}{20}{figure.caption.9}%
+\contentsline {figure}{\numberline {2.11}{\ignorespaces RAF-DB Dataset Distribution}}{21}{figure.caption.10}%
+\contentsline {figure}{\numberline {2.12}{\ignorespaces VggFace2 Dataset Distribution (Test Set), notably, the age group graph is reported in log-scale}}{21}{figure.caption.11}%
+\contentsline {figure}{\numberline {2.13}{\ignorespaces CelebA-HQ Dataset Distribution}}{22}{figure.caption.12}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Data augmentation transformations examples, starting from already cropped and resized image}}{25}{figure.caption.13}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces DoRA approach}}{30}{figure.3.2}%
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Task specific adapters, in our implementation we do not include the shared matrices, as they are used when a TS-LORA module is followed by a TA-LORA module}}{32}{figure.caption.17}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Variances obtained by MTLoRA and DoRA, the model converge to similar weighting for the three task}}{44}{figure.caption.25}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Confusion matrices on the RAF-DB dataset, with APViT and Poster++ reported for comparison.}}{52}{figure.caption.36}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Comparison of age confusion matrices across FairFace and UTKFace.}}{53}{figure.caption.37}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Comparison of untrained and trained model features on RAF-DB, for the DoRA MTL model.}}{56}{figure.caption.42}%
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Comparison of untrained and trained model features on UTKFace, for the DoRA MTL model.}}{57}{figure.caption.43}%
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Visualization of MTLoRA features. We can appreciate how each task has its own representation}}{58}{figure.caption.44}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Example of MTLoRA predictions}}{59}{figure.caption.45}%

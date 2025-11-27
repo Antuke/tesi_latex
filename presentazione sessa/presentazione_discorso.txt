@@ -1,0 +1,38 @@
+Buongiorno, sono Antonio Sessa e presento il lavoro tesi, «Adapting VLM via parameter-efficient fine-tuning for multitask classification of Age, Gender, and Emotion».
+Nel giorno di oggi, l'interazione uomo-macchina può beneficiare del riconoscimento di attributi soft-biometrics, infatti un robot sociale per esempio può risultare molto più empatico cordiale, adattato il suo colloquio basandosi sul genere dell'interlocutore, usando i giusti pronomi, e usare un tipo di linguaggio diverso basandosi sull'età e sullo stato animo. 
+Questo comporta il riconoscimento di tre 'soft-biometrics' attributes fondamentali: genere, età ed emozione. 
+Classificare questi tre attributi, specialmente età ed emozione, presenta diversi problemi che devono essere affrontati.
+Per il compito di classificare l'emozione dal volto umano, uno dei problemi principali, deriva dalla qualità e quantità dei dataset a disposizione. Infatti spesso, la quantità di dati a disposizione è poca, ed inoltre (dire qualcosa sul problema della qualità delle labels)
+Per il compito di classificare l'età invece, il problema è la alta intra-class variance, infatti due individui della stessa età, possono apparire molto diversi, dato il loro life-style.
+Date queste problematica, una soluzione può essere quella di usare "potenti modelli" come i vision language models. I VLM sono modelli di visione "foundation" che sono stati addestrati su milioni, se non miliardi, di coppie imagine-testo scraped dall'internet. L'idea principale di questi modelli, e quello di poterli usare zero-shot, infatti, date diverse label, o un "prompt", e le immagini da classificare si può avere un classificatore zero-shot. Tra i vari modelli VLM disponibili (siglip,siglip2, clip, blip etc etc) abbiamo scelto il recente perception encoder, data la sua performance sui benchmark in zero-shot e il suo essere open-source.
+Abbiamo quindi utilizzato percepetion encoder in questa maniera ottenendo i seguenti risultati sui nostri dataset.
+age:
+emot:
+gender:
+
+vediamo come i risultati, tranne che per genere, sono abbastanza insoddisfacenti, anche se non totalmente pessimi. Questo è promettente, mosrtandoci che nel general training il modello ha imparato qualcosa sul nostro task, ma comunque non abbastanza per i nostri scopi. Inoltre il modello è anche insoddisfacente al livello di efficienza, nel senso di memory footprint e latenza
+param: (text encoder) + (vision encoder)
+gflops:
+
+Per migliorare questi due fattori possiamo scartare il text-encoder, dato che tutte le capacità visive del modello derivano dal vision transformer che funge da vision encoder. Facendo ciò dimezziamo sia il memory footprint che gflops. Dato che il modello ora non può fungere più in modalità zero-shot, però abbiamo bisogno di adattarlo al nostro task di classificazione. Tra i modi che esploreremo per adattare il nostro modello, tutti richiedono un dataset e quindi lo presentiamo brevemente.
+Usiamo un dataset combinato per il training, e i dataset che usiamo sono i seguenti: RAF-DB come dataset per emotion (il fatto che è buono), Lagenda e FairFace (per età e genere) e Celeba_HQ.
+
+Tabella del dataset combinato
+
+Come vediamo dalla tabella il dataset è particolarmente sbilanciato per emozione e età e indipendente dal tipo di adattamento che utilizzeremo questo problema deve essere afforntato, per evitare modelli con un bias verso la classe di maggioranza. Per fare ciò usiamo il balanced sampling, affibbiando ad ogni campione uno score uguale alla media della frequenza inversa di ogni sua label e campionando con maggior probabilità i campioni con questo score più alto, e possiamo vedere dalla colonna "weighted %" l'effetto di questa metedologia.
+
+Inoltre, dato che solo il 5% di campioni sono labelled per emozione, li duplichiamo fino a farli diventare un terzo, così da evitrare che il training dell'emozione venga hindered dal trainining di age e gender.
+
+
+Le metodologie di adattamento che abbiamo sperimentato per il multi-task sono 4: linear probing, fine-tune parziale, DoRA e LoRA+ e MTLoRA.
+Il linear probing è la metodologia più semplice. Dato il vision transformer, attacchiamo tre teste di classificazione, una per task, che sono MLP con un hidden layer, per produrre le predizioni, e le addestraimo con la cross-entropy loss. Questo metodo addestra soltanto 0.33% dei parametri e produce i seguenti risultati.
+Possiamo subito vedere un salto dell'accuracy importante per age e emotion. Dato che è chiaro che questa capacità di classificare non è dovuta soltanto al piccolo MLP che abbiamo aggiunto è chiaro che lo zero-shot classification non è il metodo più ideale per estrarre al meglio le capacità del modello.
+
+Un altra metodologia che abbiamo provato è il partial fine-tuning. Il partial fine-tuning prevede il trianing degli ultimi 4 transofrmers layers e attention pooling layer del ViT. Non possiamo spingergi ad un full fine-tune, per due motivi. Uno di hardware: non abbiamo abbastanza VRAM per addastrare tutti i parametri, un secondo più teorico: il ViT che stiamo usando è stato addestrando con dataset nell'ordine dei miliardi, e se facessimo un fine-tune completa col nostro dataset di attorno 160k campioni introduciamo un rischio di overfitting. Per il partial fine-tuning dobbiamo anche introdurre la metodologia utilizzato per bilanciare le tre loss.
+
+La metodo
+
+
+
+
+

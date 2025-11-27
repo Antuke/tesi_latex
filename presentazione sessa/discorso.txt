@@ -1,0 +1,101 @@
+*SLIDE 1*
+Good morning, I'm Antonio Sessa, and in my thesis I worked on efficiently adapting VLM, using parameter-efficient fine-tuning methodologies,
+for the specific tasks of multi-task soft biometric attributes recognitions.
+
+** SLIDE 2 INTRODUCTION **
+*SLIDE 3*
+Soft biometrics attribute, are non-unique, human attributes that can be gathered from images of persons, and can be used in many applications, such a social robotics,
+security, advertsing and healthcare.
+
+*SLIDE 4*
+In particular we focused on attributes that can be gathered from facial images, and these are: Facial emotion, age group and gender.
+These attributes have some unique challanges, for examples FeR dataset with high agreement are small, and class unbalanced.
+Same thing for age datasets, are class unbalanced and moreover have high class intra-variance, meaning that two individual of the same age may look totally different.
+
+*SLIDE 5*
+For our first solution, we used VLM, in a zero-shot manner. VLM are large pre-trained neural network, that can embedd in the same vector space text and images, allowing
+classifications trough cosine-similarity without task specific training. For this experiment we used the Perception Encoder released recently by Meta, that follow a 
+two-tower architecture.
+
+*SLIDE 6*
+The first obtained results were not satisfactory. In fact we have poor accuracy on the two hard task, age and emotions, and moroever also high memory footprint 
+and latency.
+Our idea to address this problems is to omit the text encoder, given that all visual understanding stems from the vision encoder. So we will treat the vision 
+encoder as a vision foundation model and adapt it for our specifics tasks.
+
+** SLIDE 7 METHODOLOGIES **
+*SLIDE 8*
+To adapt our model we need to gather a dataset. For this reason we build a composite datasets, with some strong points, like low celebrity data in training sets, 
+high annotator agreements and multiple ethnicities rappresented.
+But we also have some problem that we will have to address, that are evident when looking at the dataset distributions.
+
+*SLIDE 9 & SLIDE 10*
+As we can see, both age and emotion are highly class unbalanced.
+
+*SLIDE 11*
+Moreover, the multi-task settings also adds some more challanges that have to be addressed:
+Missing labels, that we resolve with masked loss;
+Task unbalance, meaning that only 5% of the dataset is labelled by emotion, and so we have to duplicate these samples.
+Unbalanced loss, meaning that even if we have three classification task, their magnitude is different because they have different number of classes (9,7 and 2).
+To address this we use a techinque called uncertainty weighting, that lets the model learns the weights for each tasks, by modelling the uncertainty for each of them.
+Finally, class unbalanced is resolved with balanced sampling, by using as a scoring mechanism inverse frequency, so that underraprresnted classes get sampled more during training.
+
+*SLIDE 12*
+So, let's present some of the produced models, first one is linear probing. In this tecnique we keep frozen the vision encoder and only add three MLP classifiers heads.
+This is the most parameter efficient-wise method, as less than 1% of the total params are traiend.
+
+*SLIDE 13*
+Partial fine-tuning, we unfreeze the last 4 transformer block and attention pooling layer, and we jointly train them with the classification heads. Already we this approach
+we reach 20% of parameters trained.
+
+*SLIDE 14*
+The next logical step would be full-fine-tuning. But this is not possible with our hardware, as we do not posses enough VRAM to train all the parameters with an accettable batch size.
+Moreover, full fine-tuning is not completely ideal for our setup: we would considerably increase the model capacity while keeping a relatively small datasets (compared to the
+5+ billion datasets of the pre-train). This would likely lead to overfitting. Plus the task-gradients may destroy the generalized knowledge of the models, a phenomena commonly called "catastrophic forgetting".
+
+*SLIDE 15*
+To address this problem we use low-rank adaptation, also know as LoRA. LoRA decomposes the weight matrix update in two small low-rank matrices, A and B. This approach solves good part of our problems, as LoRA only trains this low-parameter adapters. Moreover, the low-rank constraints, works as a regularizing effect, combatting overfitting and catastrophic forgetting.
+
+*SLIDE 16*
+We also make use of the latest enhancements of this methodology. LoRA+ speeds up the training convergence time, by setting an higher learning rate to the zero initialized B matrix.
+
+*SLIDE 17*
+DoRA (Weight-Decomposed Low-Rank Adaptation) increased the model capacity by further decomposing the weight matrix update, in a direction matrix, trained with LoRA adapters, and a magnitude vector.
+
+*SLIDE 18*
+This methodologies, with our configuration, indirectly updates each parameters of the network, and relatively trains less than half of the parameters, reaching 8% of trained params.
+
+*SLIDE 19*
+Finally, we also tested a multi-task variant of LoRA, called multi-task LoRA. The main idea of this methodologies is to efficiently produce task-specific fatures map to classify. This is achieved by injecting task-specific LoRA adapters in the last transformer layers and attention pooling layers.
+
+*SLIDE 20*
+Given the addition of these adapters, we reach 10% of trainable parameters.
+
+** SLIDE 21 RESULTS**
+*SLIDE 22*
+First results we take a look at, is the single-task vs multi-task comparison, to validate our multi-task framework infact we trained also a single-task variant of each presented model. As we can see, we can say that our multi-task framework achieves performance parity with the single task variant in each of the tasks.
+
+*SLIDE 23*
+We can see from this table, that we are successfull at improving efficiency, in fact we both halve memory footprint and inference time by omitting the text encoder. Moreover we can also see how we have a gain in avarage accuracy on the three tasks.
+
+*SLIDE 24*
+In this slide we can see more detailed results for all the multi-task models. We can see that the LoRA based approaches outperforms the partial fine tune approach, even if they considerably train less parameters.
+More in detail, we can see that the LoRA approaches shows positive transfer for the emotion classification tasks, while the MTLoRA achieves the top-spot on the age classifications benchmarks.
+
+*SLIDE 25*
+To contextualize this results, let's compare our model with the SOTA results on the FairFace and RAF-DB benchmark. We can see that our model achieve SOTA perfomances on the FairFace datasets, while lagging a bit behind with the RAF-DB benchmarks. In fact the SOTA FER model is based on convulutional nn, that are inherently more capable to adapt to the small FeR datasets. While with the second model APViT, that is based on hybrid CNN and ViT approach, we are more on par.
+
+*SLIDE 26*
+This can be seen by looking for example at another important metric, that is balanced accuracy. In this case the gap is less than 1%.
+
+*SLIDE 27 & 28*
+We can also see balanced accuracy for the age classification tasks, and we can observe how most of the model mistakes are off-by-one errors, meaning that the models inderectly learnt the ordinality of the age classifications task.
+
+*SLIDE 29*
+Finally, we can see the effect of the adaptation by looking at the visualization of the features produced by the vision encoder: on the top-row we can see the untrained vision encoder visualization, and in the bottom row we can see the trained visualization, and we can see how the first two principle componenents seem to nealtly encode the gender and emotion information.
+
+*SLIDE 30*
+Also t-SNE visualization for age and gender, and here we can see the difference between the shared LoRA approach and MTLoRA. As in the second row we can see that the age and gender rappresentation differ, due to the task-specific features maps.
+
+*SLIDE 31*
+Demo
